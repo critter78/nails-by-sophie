@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – Nails by Sophie 💅</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6FB0; --pink-light: #FFB3D9; --pink-pale: #FFF0F8;
+    --blue: #6EC6FF; --blue-light: #C2E8FF; --blue-pale: #EBF7FF;
+    --green: #5DD08E; --green-pale: #EDFBF3;
+    --red: #FF5B7A;  --red-pale: #FFF0F2;
+    --orange: #FFB347; --orange-pale: #FFF8EC;
+    --pearl: #FAF7F4; --text: #3A2A35; --muted: #9A8090;
+    --radius: 16px; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--pearl); color: var(--text); }
+
+  /* ── LOGIN ── */
+  .login-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 100vh; padding: 20px;
+  }
+  .login-card {
+    background: white; border-radius: 24px; padding: 40px 36px;
+    box-shadow: var(--shadow); border: 1.5px solid var(--pink-light);
+    width: 100%; max-width: 380px; text-align: center;
+  }
+  .login-card h1 { font-family: 'Bubblegum Sans', cursive; font-size: 2rem; color: var(--pink); margin-bottom: 6px; }
+  .login-card p { color: var(--muted); margin-bottom: 24px; }
+  .login-card input {
+    width: 100%; padding: 12px 16px; border: 2px solid var(--pink-light);
+    border-radius: 14px; font-family: 'Nunito', sans-serif; font-size: 1rem;
+    background: var(--pearl); margin-bottom: 14px; outline: none;
+  }
+  .login-card input:focus { border-color: var(--pink); }
+  .login-card button {
+    width: 100%; padding: 14px; background: var(--pink); color: white;
+    border: none; border-radius: 14px; font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.2rem; cursor: pointer; transition: opacity .2s;
+  }
+  .login-card button:hover { opacity: .88; }
+  .login-err { color: var(--red); font-size: .85rem; margin-top: 10px; display: none; }
+  .login-err.visible { display: block; }
+
+  /* ── LAYOUT ── */
+  #app { display: none; }
+  #app.visible { display: block; }
+
+  .topbar {
+    background: white; padding: 14px 28px; border-bottom: 1.5px solid var(--pink-pale);
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-title { font-family: 'Bubblegum Sans', cursive; font-size: 1.5rem; color: var(--pink); }
+  .topbar-actions { display: flex; gap: 10px; }
+  .tab-btn {
+    padding: 8px 20px; border-radius: 20px; border: 2px solid var(--pink-light);
+    background: white; font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: .9rem; cursor: pointer; color: var(--muted); transition: all .18s;
+  }
+  .tab-btn.active { background: var(--pink); color: white; border-color: var(--pink); }
+  .refresh-btn {
+    padding: 8px 16px; border-radius: 20px; background: var(--blue-pale);
+    border: 2px solid var(--blue-light); color: var(--blue); font-weight: 700;
+    font-size: .9rem; cursor: pointer; transition: all .18s;
+  }
+  .refresh-btn:hover { background: var(--blue); color: white; }
+
+  .main { max-width: 1100px; margin: 0 auto; padding: 28px 20px; }
+
+  /* ── STATS ── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .stat-card {
+    background: white; border-radius: var(--radius); padding: 18px 16px;
+    border: 1.5px solid var(--pink-pale); box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .stat-card .stat-num { font-family: 'Bubblegum Sans', cursive; font-size: 2.2rem; }
+  .stat-card .stat-lbl { font-size: .8rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+
+  /* ── FILTERS ── */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 20px; border: 2px solid #e0dce0;
+    background: white; cursor: pointer; font-weight: 700; font-size: .85rem;
+    color: var(--muted); transition: all .18s;
+  }
+  .filter-btn.active-all    { background: var(--text); color: white; border-color: var(--text); }
+  .filter-btn.active-pending  { background: var(--orange); color: white; border-color: var(--orange); }
+  .filter-btn.active-approved { background: var(--green);  color: white; border-color: var(--green); }
+  .filter-btn.active-rejected { background: var(--red);    color: white; border-color: var(--red); }
+
+  /* ── BOOKING CARDS ── */
+  .bookings-grid { display: grid; gap: 16px; }
+  .booking-card {
+    background: white; border-radius: var(--radius);
+    border: 1.5px solid var(--pink-pale); box-shadow: var(--shadow); overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .booking-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+  .booking-card.status-pending  { border-left: 4px solid var(--orange); }
+  .booking-card.status-approved { border-left: 4px solid var(--green); }
+  .booking-card.status-rejected { border-left: 4px solid var(--red); opacity: .8; }
+
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 0;
+  }
+  .client-name { font-weight: 800; font-size: 1.05rem; }
+  .status-badge {
+    font-size: .75rem; font-weight: 700; padding: 4px 12px;
+    border-radius: 20px; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .badge-pending  { background: var(--orange-pale); color: var(--orange); }
+  .badge-approved { background: var(--green-pale);  color: #2E9D5E; }
+  .badge-rejected { background: var(--red-pale);    color: var(--red); }
+
+  .card-body { padding: 10px 20px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+  .card-row { font-size: .88rem; }
+  .card-row .lbl { color: var(--muted); font-weight: 600; font-size: .78rem; display: block; }
+  .card-row .val { font-weight: 700; }
+
+  .card-footer {
+    background: var(--pearl); padding: 12px 20px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    border-top: 1px solid var(--pink-pale);
+  }
+  .action-btn {
+    padding: 8px 18px; border-radius: 20px; font-family: 'Nunito', sans-serif;
+    font-weight: 700; font-size: .85rem; cursor: pointer; border: 2px solid;
+    transition: all .18s;
+  }
+  .btn-approve { background: var(--green-pale); color: #2E9D5E; border-color: var(--green); }
+  .btn-approve:hover { background: var(--green); color: white; }
+  .btn-reject  { background: var(--red-pale); color: var(--red); border-color: var(--red); }
+  .btn-reject:hover  { background: var(--red); color: white; }
+  .btn-msg { background: var(--blue-pale); color: #2294D4; border-color: var(--blue); }
+  .btn-msg:hover { background: var(--blue); color: white; }
+
+  /* ── CALENDAR VIEW ── */
+  #view-calendar { display: none; }
+  #view-calendar.visible { display: block; }
+  #view-list { display: block; }
+  #view-list.hidden { display: none; }
+
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-header-row { grid-column: 1/-1; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 4px; }
+  .cal-header-cell { text-align: center; font-weight: 800; font-size: .75rem; text-transform: uppercase; color: var(--muted); padding: 8px 0; }
+  .cal-cell {
+    min-height: 90px; background: white; border-radius: 10px;
+    border: 1.5px solid var(--pink-pale); padding: 6px 8px;
+    font-size: .75rem; transition: box-shadow .15s;
+  }
+  .cal-cell:hover { box-shadow: var(--shadow); }
+  .cal-cell.today { border-color: var(--pink); }
+  .cal-cell.other-month { opacity: .35; }
+  .cal-date-num { font-weight: 800; font-size: .8rem; margin-bottom: 4px; }
+  .cal-booking-dot {
+    padding: 2px 6px; border-radius: 6px; margin-bottom: 2px;
+    font-size: .68rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dot-pending  { background: var(--orange-pale); color: var(--orange); }
+  .dot-approved { background: var(--green-pale);  color: #2E9D5E; }
+  .dot-rejected { background: var(--red-pale);    color: var(--red); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(58,42,53,0.45); z-index: 200;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal {
+    background: white; border-radius: 24px; padding: 32px;
+    max-width: 480px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal h2 { font-family: 'Bubblegum Sans', cursive; font-size: 1.6rem; margin-bottom: 16px; }
+  .modal h2.pink { color: var(--pink); }
+  .modal h2.red  { color: var(--red); }
+  .modal h2.blue { color: var(--blue); }
+  .modal p { color: var(--muted); margin-bottom: 16px; font-size: .95rem; }
+  .modal label { display: block; font-weight: 700; margin-bottom: 6px; font-size: .9rem; }
+  .modal input, .modal textarea, .modal select {
+    width: 100%; padding: 10px 14px; border: 2px solid var(--pink-light);
+    border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: .95rem;
+    background: var(--pearl); margin-bottom: 14px; outline: none; resize: vertical;
+  }
+  .modal input:focus, .modal textarea:focus { border-color: var(--pink); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+  .btn-cancel {
+    padding: 10px 22px; border-radius: 14px; border: 2px solid #ddd;
+    background: white; cursor: pointer; font-weight: 700; color: var(--muted);
+  }
+  .btn-confirm {
+    padding: 10px 22px; border-radius: 14px; border: none;
+    background: var(--pink); color: white; cursor: pointer; font-weight: 700;
+    font-family: 'Nunito', sans-serif; font-size: .95rem; transition: opacity .2s;
+  }
+  .btn-confirm.green-btn { background: var(--green); }
+  .btn-confirm.red-btn   { background: var(--red); }
+  .btn-confirm.blue-btn  { background: var(--blue); color: white; }
+  .btn-confirm:hover { opacity: .85; }
+
+  .empty-state {
+    text-align: center; padding: 60px 20px; color: var(--muted);
+  }
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+  .empty-state p { font-size: 1rem; }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 300;
+    background: var(--text); color: white; padding: 12px 20px;
+    border-radius: 14px; font-weight: 700; font-size: .9rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transform: translateY(80px); opacity: 0; transition: all .3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .cal-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .cal-nav h3 { font-family: 'Bubblegum Sans', cursive; font-size: 1.4rem; color: var(--pink); flex: 1; }
+  .cal-nav-btn { background: white; border: 2px solid var(--pink-light); border-radius: 10px; padding: 6px 14px; cursor: pointer; font-size: 1rem; }
+  .cal-nav-btn:hover { background: var(--pink-pale); }
+
+  @media (max-width: 640px) {
+    .card-body { grid-template-columns: 1fr; }
+    .topbar { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .topbar-actions { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div class="login-wrap" id="login-page">
+  <div class="login-card">
+    <div style="font-size:2.5rem;margin-bottom:6px">💅</div>
+    <h1>Sophie's Admin</h1>
+    <p>Enter your password to continue</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Login 🔑</button>
+    <div class="login-err" id="login-err">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <div class="topbar">
+    <span class="topbar-title">💅 Nails by Sophie · Admin</span>
+    <div class="topbar-actions">
+      <button class="tab-btn active" id="tab-list" onclick="switchTab('list')">📋 Bookings</button>
+      <button class="tab-btn" id="tab-cal" onclick="switchTab('calendar')">📅 Calendar</button>
+      <button class="refresh-btn" onclick="loadBookings()">↻ Refresh</button>
+      <button class="tab-btn" onclick="doLogout()" style="border-color:#ddd;color:var(--muted)">Logout</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- Stats -->
+    <div class="stats" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--orange)" id="stat-pending">0</div>
+        <div class="stat-lbl">⏳ Pending</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--green)" id="stat-approved">0</div>
+        <div class="stat-lbl">✅ Approved</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--red)" id="stat-rejected">0</div>
+        <div class="stat-lbl">❌ Rejected</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--pink)" id="stat-revenue">₪0</div>
+        <div class="stat-lbl">💰 Revenue (approved)</div>
+      </div>
+    </div>
+
+    <!-- LIST VIEW -->
+    <div id="view-list">
+      <div class="filters" id="filters">
+        <button class="filter-btn active-all" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setFilter('pending',this)">⏳ Pending</button>
+        <button class="filter-btn" onclick="setFilter('approved',this)">✅ Approved</button>
+        <button class="filter-btn" onclick="setFilter('rejected',this)">❌ Rejected</button>
+      </div>
+      <div class="bookings-grid" id="bookings-grid"></div>
+    </div>
+
+    <!-- CALENDAR VIEW -->
+    <div id="view-calendar">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">◀</button>
+        <h3 id="cal-month-title"></h3>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div class="cal-header-row">
+        <div class="cal-header-cell">Sun</div><div class="cal-header-cell">Mon</div>
+        <div class="cal-header-cell">Tue</div><div class="cal-header-cell">Wed</div>
+        <div class="cal-header-cell">Thu</div><div class="cal-header-cell">Fri</div>
+        <div class="cal-header-cell">Sat</div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- Approve -->
+<div class="modal-overlay" id="modal-approve">
+  <div class="modal">
+    <h2 class="pink">✅ Approve Booking?</h2>
+    <p id="approve-details"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-approve')">Cancel</button>
+      <button class="btn-confirm green-btn" onclick="confirmApprove()">Approve & Email Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reject -->
+<div class="modal-overlay" id="modal-reject">
+  <div class="modal">
+    <h2 class="red">❌ Decline Booking</h2>
+    <p id="reject-details"></p>
+    <label>Suggest an alternative date (optional)</label>
+    <input type="date" id="reject-alt-date">
+    <label>Suggest an alternative time (optional)</label>
+    <select id="reject-alt-time">
+      <option value="">— No alternative —</option>
+      <option value="10:00">10:00 AM</option>
+      <option value="11:00">11:00 AM</option>
+      <option value="12:00">12:00 PM</option>
+      <option value="13:00">1:00 PM</option>
+      <option value="14:00">2:00 PM</option>
+      <option value="15:00">3:00 PM</option>
+      <option value="16:00">4:00 PM</option>
+      <option value="17:00">5:00 PM</option>
+      <option value="18:00">6:00 PM</option>
+      <option value="19:00">7:00 PM</option>
+    </select>
+    <label>Note to client (optional)</label>
+    <textarea id="reject-note" rows="2" placeholder="e.g. I'm not available that day, but..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-reject')">Cancel</button>
+      <button class="btn-confirm red-btn" onclick="confirmReject()">Decline & Email Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- Message -->
+<div class="modal-overlay" id="modal-message">
+  <div class="modal">
+    <h2 class="blue">💬 Message Client</h2>
+    <p id="msg-details"></p>
+    <label>Your message</label>
+    <textarea id="msg-text" rows="4" placeholder="Type your message here…"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-message')">Cancel</button>
+      <button class="btn-confirm blue-btn" onclick="confirmMessage()">Send Message 💌</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+let adminKey = '';
+let allBookings = [];
+let currentFilter = 'all';
+let activeBookingId = null;
+let calYear, calMonth;
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (!pw) return;
+  adminKey = pw;
+  loadBookings();
+}
+function doLogout() {
+  adminKey = '';
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg, duration = 3000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), duration);
+}
+
+// ── Load bookings ─────────────────────────────────────────────────────────────
+async function loadBookings() {
+  try {
+    const res = await fetch(`/api/bookings?adminKey=${encodeURIComponent(adminKey)}`);
+    if (res.status === 401) {
+      document.getElementById('login-err').classList.add('visible');
+      return;
+    }
+    document.getElementById('login-err').classList.remove('visible');
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    allBookings = await res.json();
+    allBookings.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    updateStats();
+    renderBookings();
+    if (document.getElementById('view-calendar').classList.contains('visible')) renderCalendarView();
+  } catch {
+    alert('Could not connect to server.');
+  }
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function updateStats() {
+  const pending  = allBookings.filter(b => b.status === 'pending').length;
+  const approved = allBookings.filter(b => b.status === 'approved').length;
+  const rejected = allBookings.filter(b => b.status === 'rejected').length;
+  const revenue  = allBookings.filter(b => b.status === 'approved').reduce((a,b) => a + (b.totalPrice||0), 0);
+  document.getElementById('stat-pending').textContent  = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  document.getElementById('stat-rejected').textContent = rejected;
+  document.getElementById('stat-revenue').textContent  = '₪' + revenue;
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────────
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn');
+  btn.classList.add('active-' + f);
+  renderBookings();
+}
+
+// ── Render booking cards ──────────────────────────────────────────────────────
+function formatDT(date, time) {
+  const d = new Date(date + 'T00:00:00');
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}  •  ${time}`;
+}
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function renderBookings() {
+  const filtered = currentFilter === 'all'
+    ? allBookings
+    : allBookings.filter(b => b.status === currentFilter);
+
+  const grid = document.getElementById('bookings-grid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No bookings here yet.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(b => {
+    const svcList = Array.isArray(b.services) ? b.services.join(', ') : b.services;
+    const altTime = b.alternativeTime ? `<br><small style="color:var(--orange)">Alt suggested: ${formatDT(b.alternativeTime.date, b.alternativeTime.time)}</small>` : '';
+    const msgCount = b.messages?.length ? `<span style="color:var(--blue);font-size:.75rem;margin-left:6px">${b.messages.length} msg${b.messages.length>1?'s':''}</span>` : '';
+
+    const actions = b.status === 'pending' ? `
+      <button class="action-btn btn-approve" onclick="openApprove('${b.id}')">✅ Approve</button>
+      <button class="action-btn btn-reject"  onclick="openReject('${b.id}')">❌ Decline</button>
+    ` : b.status === 'approved' ? `
+      <button class="action-btn btn-msg" onclick="openMessage('${b.id}')">💬 Message${msgCount}</button>
+    ` : `<span style="color:var(--muted);font-size:.85rem">Declined${altTime}</span>`;
+
+    return `
+    <div class="booking-card status-${b.status}">
+      <div class="card-header">
+        <span class="client-name">${b.name}</span>
+        <span class="status-badge badge-${b.status}">${b.status}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><span class="lbl">📅 Date & Time</span><span class="val">${formatDT(b.date, b.time)}</span></div>
+        <div class="card-row"><span class="lbl">💅 Services</span><span class="val">${svcList}</span></div>
+        <div class="card-row"><span class="lbl">💰 Total</span><span class="val" style="color:var(--pink)">₪${b.totalPrice}</span></div>
+        <div class="card-row"><span class="lbl">📧 Email</span><span class="val"><a href="mailto:${b.email}" style="color:var(--blue);text-decoration:none">${b.email}</a></span></div>
+        <div class="card-row"><span class="lbl">📱 Phone</span><span class="val">${b.phone || '—'}</span></div>
+        <div class="card-row"><span class="lbl">🕐 Booked</span><span class="val">${fmtDate(b.createdAt)}</span></div>
+      </div>
+      <div class="card-footer">${actions}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Modals ────────────────────────────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id).classList.add('visible'); }
+function closeModal(id) { document.getElementById(id).classList.remove('visible'); }
+
+function openApprove(id) {
+  activeBookingId = id;
+  const b = allBookings.find(x => x.id === id);
+  document.getElementById('approve-details').textContent =
+    `${b.name} — ${Array.isArray(b.services) ? b.services.join(', ') : b.services} — ${formatDT(b.date, b.time)}`;
+  openModal('modal-approve');
+}
+
+function openReject(id) {
+  activeBookingId = id;
+  const b = allBookings.find(x => x.id === id);
+  document.getElementById('reject-details').textContent =
+    `${b.name} — ${formatDT(b.date, b.time)}`;
+  document.getElementById('reject-alt-date').value = '';
+  document.getElementById('reject-alt-time').value = '';
+  document.getElementById('reject-note').value = '';
+  openModal('modal-reject');
+}
+
+function openMessage(id) {
+  activeBookingId = id;
+  const b = allBookings.find(x => x.id === id);
+  document.getElementById('msg-details').textContent =
+    `To: ${b.name} (${b.email}) — Appt: ${formatDT(b.date, b.time)}`;
+  document.getElementById('msg-text').value = '';
+  openModal('modal-message');
+}
+
+async function confirmApprove() {
+  closeModal('modal-approve');
+  const res = await fetch(`/api/bookings/${activeBookingId}/approve`, {
+    method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ adminKey })
+  });
+  if (res.ok) { toast('✅ Booking approved! Confirmation email sent.'); loadBookings(); }
+  else { const d = await res.json(); toast('Error: ' + d.error); }
+}
+
+async function confirmReject() {
+  const altDate = document.getElementById('reject-alt-date').value;
+  const altTime = document.getElementById('reject-alt-time').value;
+  const note    = document.getElementById('reject-note').value;
+  closeModal('modal-reject');
+  const res = await fetch(`/api/bookings/${activeBookingId}/reject`, {
+    method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ adminKey, altDate, altTime, note })
+  });
+  if (res.ok) { toast('❌ Booking declined. Client notified.'); loadBookings(); }
+  else { const d = await res.json(); toast('Error: ' + d.error); }
+}
+
+async function confirmMessage() {
+  const message = document.getElementById('msg-text').value.trim();
+  if (!message) return;
+  closeModal('modal-message');
+  const res = await fetch(`/api/bookings/${activeBookingId}/message`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ adminKey, message })
+  });
+  if (res.ok) { toast('💬 Message sent!'); loadBookings(); }
+  else { const d = await res.json(); toast('Error: ' + d.error); }
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('tab-list').classList.toggle('active', tab === 'list');
+  document.getElementById('tab-cal').classList.toggle('active', tab === 'calendar');
+  document.getElementById('view-list').classList.toggle('hidden', tab !== 'list');
+  document.getElementById('view-calendar').classList.toggle('visible', tab === 'calendar');
+  if (tab === 'calendar') renderCalendarView();
+}
+
+// ── Calendar view ─────────────────────────────────────────────────────────────
+function changeMonth(delta) {
+  calMonth += delta;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendarView();
+}
+
+function renderCalendarView() {
+  const now = new Date();
+  if (!calYear) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-title').textContent = `${MONTHS[calMonth]} ${calYear}`;
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const grid = document.getElementById('cal-grid');
+  let html = '';
+
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-cell other-month"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr === now.toISOString().split('T')[0];
+    const dayBookings = allBookings.filter(b => b.date === dateStr);
+    const dots = dayBookings.map(b =>
+      `<div class="cal-booking-dot dot-${b.status}" title="${b.name}">${b.time} ${b.name.split(' ')[0]}</div>`
+    ).join('');
+    html += `<div class="cal-cell ${isToday ? 'today' : ''}">
+      <div class="cal-date-num">${d}</div>${dots}
+    </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+// ── Close modal on overlay click ──────────────────────────────────────────────
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('visible'); });
+});
+</script>
+</body>
+</html>

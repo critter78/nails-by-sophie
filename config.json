@@ -1,0 +1,27 @@
+{
+  "admin": {
+    "email": "critter@rank1st.ca",
+    "password": "sophie2026",
+    "name": "Sophie"
+  },
+  "smtp": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "secure": false,
+    "user": "YOUR_GMAIL@gmail.com",
+    "pass": "YOUR_GMAIL_APP_PASSWORD"
+  },
+  "business": {
+    "name": "Nails by Sophie",
+    "availability": {
+      "0": [16, 17],
+      "1": [17, 18, 19],
+      "2": [17, 18, 19],
+      "3": [17, 18, 19],
+      "4": [17, 18, 19],
+      "5": [17, 18, 19],
+      "6": [10, 11, 12, 13, 14]
+    }
+  },
+  "port": 3000
+}

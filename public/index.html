@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nails by Sophie 💅</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Varela+Round&family=Heebo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#FF5DA2; --blue:#4FC3E8;
+  --pearl:#FCF6FA; --cream:#FFFDFC;
+  --ink:#4a3946; --ink-soft:#9b8b96;
+  --line:rgba(74,57,70,.10); --card:#fff;
+  --r:24px; --r-sm:16px; --r-lg:34px;
+  --pink-deep:#e8478d;
+  --shadow:0 14px 38px -14px rgba(232,71,141,.30);
+  --shadow-sm:0 6px 18px -8px rgba(232,71,141,.25);
+  --pink-soft:#ffe6f1; --blue-soft:#e2f6fd;
+  --amber:#f5a623; --green:#34c98a; --err:#e2505b;
+  --maxw:980px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh}
+body{
+  font-family:'Nunito','Heebo',system-ui,sans-serif;
+  color:var(--ink);background:var(--pearl);
+  -webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(46vw 46vw at 88% -6%,color-mix(in srgb,var(--pink) 22%,transparent),transparent 70%),
+    radial-gradient(40vw 40vw at -6% 12%,color-mix(in srgb,var(--blue) 22%,transparent),transparent 70%),
+    radial-gradient(50vw 50vw at 50% 116%,color-mix(in srgb,var(--pink) 14%,transparent),transparent 70%);
+}
+h1,h2,h3,h4{font-family:'Fredoka','Varela Round',sans-serif;font-weight:600;margin:0;color:var(--ink)}
+button{font-family:inherit;cursor:pointer}input{font-family:inherit}textarea{font-family:inherit}
+.muted{color:var(--ink-soft)}.small{font-size:.86rem}.block{display:block}.center{text-align:center}
+
+/* ── app layout ── */
+.app{min-height:100vh;display:flex;flex-direction:column}
+.canvas{flex:1;width:100%;max-width:var(--maxw);margin:0 auto;padding:28px 20px 60px}
+[dir=rtl] body{text-align:right}
+
+/* ── topbar ── */
+.topbar{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px clamp(16px,4vw,40px);
+  background:color-mix(in srgb,var(--pearl) 78%,transparent);
+  backdrop-filter:blur(12px) saturate(1.4);
+  border-bottom:1px solid var(--line);
+}
+.top-nav{display:flex;align-items:center;gap:10px}
+.navlink{border:none;background:transparent;color:var(--ink);font-weight:700;font-size:.92rem;padding:8px 12px;border-radius:999px}
+.navlink:hover{background:var(--pink-soft);color:var(--pink-deep)}
+.lang-toggle{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:var(--shadow-sm)}
+.lang-toggle button{border:none;background:transparent;padding:5px 11px;border-radius:999px;font-weight:800;color:var(--ink-soft);font-size:.82rem}
+.lang-toggle button.on{background:var(--blue);color:#fff}
+.surface-btn{border:none;background:var(--ink);color:#fff;font-weight:700;font-size:.85rem;padding:9px 15px;border-radius:999px;box-shadow:var(--shadow-sm)}
+.surface-btn:hover{transform:translateY(-1px)}
+.is-admin .surface-btn{background:var(--pink)}
+.notif-wrap{position:relative}
+.bell{position:relative;border:1px solid var(--line);background:#fff;color:var(--ink);width:40px;height:40px;border-radius:999px;display:grid;place-items:center;box-shadow:var(--shadow-sm)}
+.bell:hover{color:var(--pink-deep)}
+.bell-badge{position:absolute;top:-4px;inset-inline-end:-4px;background:var(--pink);color:#fff;font-size:.68rem;font-weight:800;min-width:18px;height:18px;padding:0 4px;border-radius:999px;display:grid;place-items:center;border:2px solid var(--pearl)}
+.notif-pop{position:absolute;inset-inline-end:0;top:50px;width:300px;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);box-shadow:var(--shadow);overflow:hidden;z-index:40}
+.notif-head{padding:12px 16px;font-weight:800;font-family:'Fredoka',sans-serif;border-bottom:1px solid var(--line);color:var(--pink-deep)}
+.notif-item{display:flex;gap:9px;align-items:flex-start;padding:11px 16px;font-size:.88rem;border-bottom:1px solid var(--line)}
+.notif-item:last-child{border-bottom:none}
+.notif-empty{padding:16px;color:var(--ink-soft);font-size:.88rem;text-align:center}
+
+/* ── logo ── */
+.logo{display:inline-flex;align-items:center;user-select:none}
+.logo[role=button]{cursor:pointer}
+.logo-bubble{font-family:'Fredoka','Varela Round',sans-serif;font-weight:700;line-height:.95;letter-spacing:.4px}
+.logo-bubble .lw{-webkit-text-stroke:2.4px #fff;paint-order:stroke fill;
+  text-shadow:0 2px 0 rgba(255,255,255,.6),0 4px 0 color-mix(in srgb,var(--ink) 10%,transparent),0 9px 14px rgba(232,71,141,.22)}
+.lw-pink{color:var(--pink)}.lw-blue{color:var(--blue)}
+.logo-xs .logo-bubble{font-size:1.05rem}
+.logo-sm .logo-bubble{font-size:1.5rem}
+.logo-md .logo-bubble{font-size:2.2rem}
+
+/* ── buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:999px;font-weight:800;font-family:'Nunito','Heebo',sans-serif;padding:13px 26px;font-size:1rem;transition:transform .15s,box-shadow .15s,background .15s}
+.btn-full{width:100%}
+.btn-primary{background:var(--pink);color:#fff;box-shadow:0 10px 22px -8px var(--pink-deep)}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 16px 28px -10px var(--pink-deep)}
+.btn-soft{background:var(--blue-soft);color:#1f7fa0}
+.btn-soft:hover:not(:disabled){transform:translateY(-2px);background:color-mix(in srgb,var(--blue) 22%,#fff)}
+.btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover:not(:disabled){border-color:var(--pink);color:var(--pink-deep)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.link-btn{border:none;background:none;color:var(--pink-deep);font-weight:800;text-decoration:underline;text-underline-offset:3px;padding:6px}
+.link-btn.small{font-size:.82rem;color:var(--ink-soft);text-decoration:none}
+.link-btn.small:hover{color:var(--pink-deep);text-decoration:underline}
+
+/* ── hero ── */
+.home{display:flex;flex-direction:column;gap:40px}
+.hero{position:relative;text-align:center;padding:46px 16px 22px;overflow:hidden}
+.kicker{display:inline-block;background:#fff;color:var(--pink-deep);font-weight:800;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm)}
+.hero-h{font-size:clamp(2.6rem,8vw,4.6rem);line-height:1;margin:18px 0 14px;font-weight:600}
+.hh-pink{color:var(--pink)}.hh-blue{color:var(--blue)}
+.hero-h .hh-pink,.hero-h .hh-blue{-webkit-text-stroke:3px #fff;paint-order:stroke fill;text-shadow:0 4px 0 rgba(255,255,255,.6),0 12px 18px rgba(232,71,141,.18)}
+.hero-sub{max-width:440px;margin:0 auto 22px;font-size:1.08rem;color:var(--ink-soft)}
+.hero-doodles span{position:absolute;opacity:.92}
+.float{animation:bob 4s ease-in-out infinite}
+.f1{top:14px;inset-inline-start:6%;animation-delay:0s}
+.f2{top:54px;inset-inline-end:14%;animation-delay:.6s}
+.f3{bottom:6px;inset-inline-start:20%;animation-delay:1.1s}
+.f4{top:96px;inset-inline-end:6%;animation-delay:1.6s}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+
+/* ── about ── */
+.about{display:flex;gap:30px;align-items:center;background:#fff;border-radius:var(--r-lg);padding:30px clamp(20px,4vw,40px);box-shadow:var(--shadow);border:1px solid var(--line)}
+.about-art{position:relative;flex:0 0 auto;display:grid;place-items:center;width:160px;height:160px;background:var(--blue-soft);border-radius:50%}
+.about-sp{position:absolute}
+.about-sp.s1{top:6px;inset-inline-end:8px}.about-sp.s2{bottom:14px;inset-inline-start:6px}
+.about-text h2{font-size:1.8rem;margin-bottom:10px}
+.about-text p{color:var(--ink-soft);font-size:1.04rem}
+.about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.atag{background:var(--pink-soft);color:var(--pink-deep);font-weight:800;font-size:.82rem;padding:7px 14px;border-radius:999px}
+
+/* ── services ── */
+.sec-title{text-align:center;font-size:2rem;color:var(--ink)}
+.services{display:flex;flex-direction:column;gap:6px}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}
+.svc-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;background:#fff;border:1.5px solid var(--line);border-radius:var(--r-sm);padding:16px 14px 14px;transition:.15s;color:var(--ink);min-height:142px;cursor:pointer}
+.svc-card:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.svc-ic{width:42px;height:42px;border-radius:12px;background:var(--pink-soft);display:grid;place-items:center;margin-bottom:2px;transition:.15s}
+.svc-name{font-weight:800;font-size:1rem;line-height:1.2;padding-inline-end:22px}
+.svc-price{color:var(--pink-deep);font-weight:800;font-family:'Fredoka',sans-serif;font-size:1.05rem;margin-top:auto}
+.svc-check{position:absolute;top:12px;inset-inline-end:12px;width:24px;height:24px;border-radius:999px;border:1.5px solid var(--line);display:grid;place-items:center;font-weight:800;color:var(--ink-soft);font-size:.9rem}
+.svc-on{border-color:var(--pink);background:linear-gradient(180deg,#fff,var(--pink-soft))}
+.svc-on .svc-ic{background:var(--pink)}
+.svc-on .svc-check{background:var(--pink);border-color:var(--pink);color:#fff}
+
+/* ── booking form ── */
+.book-section{scroll-margin-top:80px}
+.book-card{background:var(--cream);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:clamp(20px,4vw,40px)}
+.book-head{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
+.book-head h2{font-size:2rem}
+.bsec{padding:22px 0;border-top:1px dashed var(--line)}
+.bsec:first-of-type{border-top:none;padding-top:0}
+.bstep{display:flex;align-items:center;gap:10px;font-size:1.25rem;margin-bottom:14px}
+.bnum{width:30px;height:30px;border-radius:999px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:.95rem;font-weight:800;font-family:'Nunito',sans-serif;flex:0 0 auto}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field:first-child{grid-column:1/-1}
+.field > span{font-weight:800;font-size:.88rem;color:var(--ink)}
+.field input{border:1.5px solid var(--line);border-radius:14px;padding:13px 15px;font-size:1rem;background:#fff;transition:.15s;color:var(--ink)}
+.field input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 4px var(--pink-soft)}
+.inp-err{border-color:#ff7a7a !important}
+.ferr{color:var(--err);font-size:.8rem;font-weight:700;margin-top:2px}
+
+/* ── date/time picker ── */
+.dtp-head{font-weight:800;color:var(--ink-soft);font-size:.8rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.day-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(58px,1fr);gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+.day-chip{display:flex;flex-direction:column;align-items:center;gap:1px;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:10px 4px;transition:.12s;color:var(--ink);min-width:58px}
+.day-chip:hover:not(:disabled){border-color:var(--blue);transform:translateY(-2px)}
+.day-dow{font-size:.72rem;font-weight:800;color:var(--ink-soft);text-transform:uppercase}
+.day-num{font-size:1.4rem;font-weight:700;font-family:'Fredoka',sans-serif;line-height:1}
+.day-mon{font-size:.66rem;color:var(--ink-soft);font-weight:700}
+.day-sel{background:var(--blue);border-color:var(--blue)}
+.day-sel .day-dow,.day-sel .day-num,.day-sel .day-mon{color:#fff}
+.day-closed{opacity:.34;cursor:not-allowed}
+.time-zone{margin-top:16px;min-height:48px}
+.time-grid{display:flex;flex-wrap:wrap;gap:9px}
+.time-chip{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:10px 18px;font-weight:800;color:var(--ink);transition:.12s}
+.time-chip:hover:not(:disabled){border-color:var(--pink);color:var(--pink-deep)}
+.time-sel{background:var(--pink);border-color:var(--pink);color:#fff !important}
+.time-taken{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+
+/* ── booking summary ── */
+.book-summary{margin-top:24px;background:linear-gradient(180deg,var(--pink-soft),#fff);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.bs-line{display:flex;justify-content:space-between;gap:14px;padding:7px 0;font-size:.95rem}
+.bs-line strong{text-align:end;max-width:60%}
+.bs-total{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);margin-top:8px;padding-top:14px;margin-bottom:16px}
+.bs-total span:first-child{font-weight:800;font-size:1.05rem}
+.bs-amt{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.7rem;color:var(--pink-deep)}
+
+/* ── status / thank-you ── */
+.status-wrap{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.ty-banner{text-align:center;padding:14px}
+.ty-banner h2{font-size:2.1rem;margin:8px 0 6px;color:var(--pink-deep)}
+.status-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:clamp(20px,4vw,32px)}
+.status-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.status-top h3{font-size:1.5rem}
+.confirm-strip{background:color-mix(in srgb,var(--green) 16%,#fff);color:#1c8a5f;border:1px solid color-mix(in srgb,var(--green) 30%,#fff);border-radius:14px;padding:12px 16px;font-weight:800;text-align:center;margin-bottom:16px}
+.detail-rows{display:flex;flex-direction:column;gap:2px}
+.drow{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:.96rem}
+.drow span{color:var(--ink-soft);font-weight:700}
+.drow strong{text-align:end}
+.drow-total strong{color:var(--pink-deep);font-family:'Fredoka',sans-serif;font-size:1.2rem}
+.proposed{margin-top:20px;background:var(--blue-soft);border-radius:var(--r);padding:18px}
+.proposed h4{color:#1f7fa0;font-size:1.15rem;margin-bottom:4px}
+.prop-grid{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.prop-chip{display:flex;flex-direction:column;gap:2px;background:#fff;border:1.5px solid var(--blue);border-radius:14px;padding:11px 16px;color:var(--ink);transition:.12s}
+.prop-chip:hover{background:var(--blue);color:#fff;transform:translateY(-2px)}
+.prop-chip strong{font-family:'Fredoka',sans-serif;font-size:1.05rem}
+.status-actions{display:flex;gap:12px;justify-content:center}
+
+/* ── thread ── */
+.thread{margin-top:20px;border-top:1px dashed var(--line);padding-top:16px}
+.thread-head{font-weight:800;color:var(--ink-soft);font-size:.8rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.thread-box{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;padding:4px}
+.bubble-msg{max-width:78%;padding:10px 15px;border-radius:18px;font-size:.94rem;line-height:1.4}
+.bubble-msg.mine{align-self:flex-end;background:var(--pink);color:#fff;border-bottom-right-radius:6px}
+.bubble-msg.theirs{align-self:flex-start;background:var(--blue-soft);color:var(--ink);border-bottom-left-radius:6px}
+[dir=rtl] .bubble-msg.mine{align-self:flex-start;border-bottom-right-radius:18px;border-bottom-left-radius:6px}
+[dir=rtl] .bubble-msg.theirs{align-self:flex-end}
+.thread-input{display:flex;gap:8px;margin-top:12px}
+.thread-input input{flex:1;border:1.5px solid var(--line);border-radius:999px;padding:11px 16px;font-size:.95rem}
+.thread-input input:focus{outline:none;border-color:var(--pink)}
+.thread-input .btn{padding:11px 20px}
+
+/* ── my bookings ── */
+.mybook{max-width:600px;margin:0 auto}
+.mybook .sec-title{margin-bottom:18px}
+.mybook-list{display:flex;flex-direction:column;gap:10px}
+.mybook-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;text-align:start;box-shadow:var(--shadow-sm);transition:.12s;width:100%}
+.mybook-row:hover{transform:translateY(-2px);border-color:var(--pink)}
+.mb-left{display:flex;flex-direction:column;gap:3px}
+
+/* ── pills ── */
+.pill{font-weight:800;font-size:.78rem;padding:5px 12px;border-radius:999px;white-space:nowrap}
+.pill-amber{background:#fff2dc;color:#c47a07}
+.pill-green{background:color-mix(in srgb,var(--green) 18%,#fff);color:#1c8a5f}
+.pill-blue{background:var(--blue-soft);color:#1f7fa0}
+.pill-grey{background:#eee;color:#888}
+
+/* ── admin ── */
+.admin{display:flex;flex-direction:column;gap:18px}
+.adm-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.adm-hero-text{display:flex;flex-direction:column;gap:6px;flex:1 1 auto}
+.adm-title{font-size:1.8rem;color:var(--pink-deep);line-height:1.1}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;text-align:center;box-shadow:var(--shadow-sm)}
+.stat-num{display:block;font-family:'Fredoka',sans-serif;font-weight:700;font-size:2.4rem;color:var(--pink);line-height:1}
+.stat-lab{color:var(--ink-soft);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+.adm-tabs{display:flex;gap:8px;flex-wrap:wrap;background:#fff;padding:6px;border-radius:999px;border:1px solid var(--line);box-shadow:var(--shadow-sm);align-self:flex-start}
+.adm-tab{border:none;background:transparent;padding:9px 18px;border-radius:999px;font-weight:800;color:var(--ink-soft);font-size:.9rem}
+.adm-tab-on{background:var(--blue);color:#fff}
+.adm-content{margin-top:4px}
+.req-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.req-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);padding:18px;display:flex;flex-direction:column;gap:14px;border-top:4px solid var(--amber)}
+.req-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.req-name{font-size:1.15rem;font-family:'Fredoka',sans-serif;font-weight:600}
+.req-when{display:flex;flex-direction:column;gap:1px;background:var(--pink-soft);border-radius:14px;padding:10px 14px}
+.req-when strong{font-family:'Fredoka',sans-serif;font-size:1.1rem;color:var(--pink-deep)}
+.req-body{display:flex;flex-direction:column;gap:12px}
+.req-svc{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.svc-tag{display:inline-flex;align-items:center;gap:5px;background:var(--blue-soft);color:#1f7fa0;font-weight:800;font-size:.82rem;padding:5px 11px 5px 6px;border-radius:999px}
+.req-total{margin-inline-start:auto;font-family:'Fredoka',sans-serif;font-weight:700;color:var(--pink-deep);font-size:1.1rem}
+.req-actions{display:flex;gap:8px;flex-wrap:wrap}
+.req-actions .btn{padding:10px 16px;font-size:.9rem;flex:1;min-width:90px}
+.abk-list{display:flex;flex-direction:column;gap:10px}
+.abk-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);box-shadow:var(--shadow-sm);overflow:hidden}
+.abk-head{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer}
+.abk-head:hover{background:var(--pink-soft)}
+.abk-when{flex:0 0 auto;text-align:center;background:var(--blue-soft);border-radius:12px;padding:8px 12px;min-width:64px}
+.abk-day{display:block;font-weight:800;font-size:.78rem;color:#1f7fa0;text-transform:uppercase}
+.abk-time{display:block;font-family:'Fredoka',sans-serif;font-weight:700;color:var(--ink)}
+.abk-mid{flex:1;display:flex;flex-direction:column;gap:2px}
+.abk-mid strong{font-size:1.05rem}
+.abk-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.abk-total{font-family:'Fredoka',sans-serif;font-weight:700;color:var(--pink-deep)}
+.abk-thread{padding:0 18px 18px}
+
+/* ── admin calendar ── */
+.cal{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow-sm)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dows{margin-bottom:6px}
+.cal-dow{text-align:center;font-weight:800;color:var(--ink-soft);font-size:.76rem}
+.cal-cell{min-height:74px;border:1px solid var(--line);border-radius:12px;padding:6px;display:flex;flex-direction:column;gap:3px}
+.cal-empty{border:none;background:transparent}
+.cal-num{font-weight:800;font-size:.82rem;color:var(--ink-soft)}
+.cal-dots{display:flex;flex-direction:column;gap:3px}
+.cal-ev{font-size:.62rem;font-weight:800;color:#fff;padding:2px 5px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-green{background:var(--green)}.ev-amber{background:var(--amber)}.ev-grey{background:#bbb}
+.cal-legend{display:flex;gap:18px;justify-content:center;margin-top:14px;font-size:.82rem;font-weight:700;color:var(--ink-soft)}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+
+/* ── modal ── */
+.modal-back{position:fixed;inset:0;background:rgba(74,57,70,.35);backdrop-filter:blur(3px);display:grid;place-items:center;z-index:60;padding:18px}
+.modal{background:#fff;border-radius:var(--r-lg);padding:26px;max-width:560px;width:100%;box-shadow:var(--shadow);max-height:88vh;overflow-y:auto}
+.modal h3{font-size:1.4rem;color:var(--pink-deep)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.chosen-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chosen-chip{background:var(--pink);color:#fff;font-weight:800;font-size:.82rem;padding:7px 13px;border-radius:999px;cursor:pointer;border:none}
+
+/* ── login modal ── */
+.login-wrap{display:flex;flex-direction:column;gap:14px;max-width:340px;margin:0 auto}
+.login-wrap h3{text-align:center}
+.login-wrap input{border:1.5px solid var(--line);border-radius:14px;padding:13px 15px;font-size:1rem;width:100%;background:var(--pearl)}
+.login-wrap input:focus{outline:none;border-color:var(--pink)}
+.login-err{color:var(--err);font-size:.85rem;font-weight:700;text-align:center}
+
+/* ── footer ── */
+.foot{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:26px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--pearl) 60%,#fff)}
+
+/* ── loading splash ── */
+.loading-splash{display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Fredoka',sans-serif;font-size:1.5rem;color:var(--pink-deep)}
+
+/* ── responsive ── */
+@media(max-width:680px){
+  .about{flex-direction:column;text-align:center}
+  .about-tags{justify-content:center}
+  .fields{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr 1fr}
+  .top-nav .navlink{display:none}
+  .req-list{grid-template-columns:1fr}
+  .cal-cell{min-height:58px}
+  .cal-ev{font-size:.54rem}
+  .adm-tabs{border-radius:var(--r)}
+}
+</style>
+</head>
+<body>
+<div id="root"><div class="loading-splash">💅 Loading…</div></div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- i18n -->
+<script>
+(function(){
+  const S={
+    en:{
+      dir:"ltr",tagline:"Nail artistry, made just for you",
+      nav_book:"Book now",nav_about:"About",nav_admin:"Sophie's dashboard",
+      hero_kicker:"Boutique nail studio",hero_line1:"Pretty nails,",hero_line2:"happy you.",
+      hero_sub:"Gel manicures, extensions & loving care — by appointment, in a cozy little studio.",
+      hero_cta:"Book your spot",
+      about_title:"Hi, I'm Sophie ✨",
+      about_body:"I'm a nail artist who treats every set like a tiny piece of art. Whether you want a clean natural look or full glam extensions, I take my time, use quality gel, and make sure you leave smiling. Your nails are in good hands.",
+      about_tag1:"Quality gel",about_tag2:"Cozy studio",about_tag3:"By appointment",
+      services_title:"Services & prices",services_sub:"Mix & match — pick everything you'd like in one visit.",
+      book_title:"Book an appointment",book_step_you:"Your details",
+      book_step_services:"Choose your services",book_step_when:"Pick a date & time",
+      f_name:"Full name",f_name_ph:"e.g. Sophie Levi",
+      f_phone:"Phone number",f_phone_ph:"05X-XXX-XXXX",
+      f_email:"Email",f_email_ph:"you@email.com",
+      pick_services:"Tap to select one or more",selected:"Selected",total:"Total",
+      next_2weeks:"Next 2 weeks",no_slots:"No openings",closed:"Closed",
+      pick_day_first:"Pick a day to see available times",
+      summary:"Booking summary",confirm_book:"Confirm booking",
+      err_name:"Please enter your name",err_phone:"Please enter your phone",
+      err_email:"Please enter a valid email",err_services:"Please choose at least one service",
+      err_slot:"Please pick a date & time",err_conflict:"That slot was just taken — pick another!",
+      ty_title:"You're on the list! 🎀",ty_sub:"Your request was sent to Sophie. She'll confirm shortly.",
+      yourbooking:"Your booking",book_another:"Book another",back_home:"Back to home",
+      status_pending:"Pending confirmation",status_approved:"Confirmed 🎉",
+      status_proposed:"New times suggested",status_declined:"Not available",status_cancelled:"Cancelled",
+      my_bookings:"My bookings",proposed_title:"Sophie suggested new times",
+      proposed_sub:"Her schedule changed — pick one that works for you:",
+      pick_this:"Pick this",decline_all:"None work for me",
+      msg_thread:"Messages with Sophie",msg_ph:"Write a message…",send:"Send",
+      confirmed_banner:"Your appointment is confirmed! See you soon 💅",
+      notif:"Notifications",no_notif:"Nothing new right now",
+      n_approved:"Sophie confirmed your booking!",n_proposed:"Sophie suggested new times",
+      n_message:"Sophie sent you a message",
+      adm_title:"Sophie's dashboard",adm_sub:"Your bookings, requests & schedule",
+      adm_back:"View client site",adm_pending:"Requests",adm_upcoming:"Upcoming",
+      adm_calendar:"Calendar",adm_all:"All bookings",
+      adm_none_pending:"No new requests 🌸",adm_none_upcoming:"Nothing booked yet",
+      approve:"Approve",suggest:"Suggest other times",decline:"Decline",
+      message_client:"Message",requested:"Requested",
+      adm_suggest_title:"Suggest other times to",adm_suggest_sub:"Pick up to 3 open slots to offer:",
+      send_suggestions:"Send suggestions",cancel:"Cancel",
+      stat_requests:"Requests",stat_confirmed:"Confirmed",stat_week:"This week",
+      legend_confirmed:"Confirmed",legend_pending:"Pending",
+      pw_prompt:"Enter Sophie's password",pw_btn:"Enter dashboard",pw_err:"Wrong password — try again.",
+      days_short:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+      months_short:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+    },
+    he:{
+      dir:"rtl",tagline:"אמנות הציפורניים, מותאמת בדיוק לך",
+      nav_book:"לקביעת תור",nav_about:"אודות",nav_admin:"הלוח של סופי",
+      hero_kicker:"סטודיו ציפורניים בוטיק",hero_line1:"ציפורניים מושלמות,",hero_line2:"חיוך מאושר.",
+      hero_sub:"מניקור ג'ל, הארכות וטיפול מפנק — בתיאום מראש, בסטודיו חמים ואינטימי.",
+      hero_cta:"קבעו תור",
+      about_title:"היי, אני סופי ✨",
+      about_body:"אני מעצבת ציפורניים שמתייחסת לכל סט כמו יצירת אמנות קטנה. בין אם רוצים מראה טבעי ונקי ובין אם הארכות מרהיבות — אני לוקחת את הזמן, משתמשת בג'ל איכותי ודואגת שתצאו מחייכות.",
+      about_tag1:"ג'ל איכותי",about_tag2:"סטודיו חמים",about_tag3:"בתיאום מראש",
+      services_title:"שירותים ומחירים",services_sub:"אפשר לשלב — בחרו הכל בביקור אחד.",
+      book_title:"קביעת תור",book_step_you:"הפרטים שלך",
+      book_step_services:"בחירת שירותים",book_step_when:"בחירת תאריך ושעה",
+      f_name:"שם מלא",f_name_ph:"לדוגמה: סופי לוי",
+      f_phone:"מספר טלפון",f_phone_ph:"05X-XXX-XXXX",
+      f_email:"אימייל",f_email_ph:"you@email.com",
+      pick_services:"הקישו לבחירה של אחד או יותר",selected:"נבחרו",total:"סה\"כ",
+      next_2weeks:"השבועיים הקרובים",no_slots:"אין פנוי",closed:"סגור",
+      pick_day_first:"בחרו יום כדי לראות שעות פנויות",
+      summary:"סיכום התור",confirm_book:"אישור הזמנה",
+      err_name:"נא להזין שם",err_phone:"נא להזין טלפון",
+      err_email:"נא להזין אימייל תקין",err_services:"נא לבחור שירות אחד לפחות",
+      err_slot:"נא לבחור תאריך ושעה",err_conflict:"הזמן הזה כבר נלקח — בחרו אחר!",
+      ty_title:"אתם ברשימה! 🎀",ty_sub:"הבקשה נשלחה לסופי. היא תאשר בקרוב.",
+      yourbooking:"התור שלך",book_another:"לקבוע תור נוסף",back_home:"חזרה לדף הבית",
+      status_pending:"ממתין לאישור",status_approved:"מאושר 🎉",
+      status_proposed:"הוצעו שעות חדשות",status_declined:"לא זמין",status_cancelled:"בוטל",
+      my_bookings:"התורים שלי",proposed_title:"סופי הציעה שעות חדשות",
+      proposed_sub:"הלוח השתנה — בחרו מה מתאים לכם:",
+      pick_this:"בחירה",decline_all:"לא מתאים לי",
+      msg_thread:"הודעות עם סופי",msg_ph:"כתבו הודעה…",send:"שלח",
+      confirmed_banner:"התור שלכם מאושר! נתראה בקרוב 💅",
+      notif:"התראות",no_notif:"אין חדש כרגע",
+      n_approved:"סופי אישרה את התור שלך!",n_proposed:"סופי הציעה שעות חדשות",
+      n_message:"סופי שלחה לך הודעה",
+      adm_title:"הלוח של סופי",adm_sub:"התורים, הבקשות והלוח שלך",
+      adm_back:"לאתר הלקוחות",adm_pending:"בקשות",adm_upcoming:"קרובים",
+      adm_calendar:"לוח שנה",adm_all:"כל התורים",
+      adm_none_pending:"אין בקשות חדשות 🌸",adm_none_upcoming:"אין תורים עדיין",
+      approve:"אישור",suggest:"הצעת שעות אחרות",decline:"דחייה",
+      message_client:"הודעה",requested:"התקבל",
+      adm_suggest_title:"הצעת שעות אחרות ל",adm_suggest_sub:"בחרו עד 3 שעות פנויות להציע:",
+      send_suggestions:"שלח הצעות",cancel:"ביטול",
+      stat_requests:"בקשות",stat_confirmed:"מאושר",stat_week:"השבוע",
+      legend_confirmed:"מאושר",legend_pending:"ממתין",
+      pw_prompt:"הזן את הסיסמה של סופי",pw_btn:"כניסה ללוח",pw_err:"סיסמה שגויה — נסה שוב.",
+      days_short:["א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"],
+      months_short:["ינו׳","פבר׳","מרץ","אפר׳","מאי","יוני","יולי","אוג׳","ספט׳","אוק׳","נוב׳","דצמ׳"],
+    }
+  };
+  window.NBS_T = l => S[l] || S.en;
+})();
+</script>
+
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+// ── constants ──────────────────────────────────────────────────────────────────
+const CURRENCY = '₪';
+const SERVICES = [
+  { key:'gelmani',   en:'Gel Manicure',  he:'מניקור ג׳ל',    price:60, icon:'polish'   },
+  { key:'gelext',    en:'Gel Extension', he:'הארכת ג׳ל',     price:80, icon:'extension'},
+  { key:'gelremoval',en:'Gel Removal',   he:'הסרת ג׳ל',      price:80, icon:'removal'  },
+  { key:'polish',    en:'Normal Polish', he:'לק רגיל',        price:40, icon:'brush'    },
+  { key:'soakoff',   en:'Soak Off',      he:'סוק אוף',        price:30, icon:'soak'     },
+  { key:'cleaning',  en:'Cleaning',      he:'ניקוי',           price:30, icon:'sparkle'  },
+  { key:'prep',      en:'Prep',          he:'הכנה',            price:15, icon:'file'     },
+];
+const svcByKey = k => SERVICES.find(s => s.key === k);
+const svcLabel = (k, lang) => { const s = svcByKey(k); return s ? (lang==='he'?s.he:s.en) : k; };
+
+// ── date helpers ──────────────────────────────────────────────────────────────
+const pad = n => String(n).padStart(2,'0');
+function fmtTime(hour, lang) {
+  if (hour == null) return '';
+  const h = ((hour+11)%12)+1, ap = hour<12?'AM':'PM';
+  return lang==='he' ? `${pad(hour)}:00` : `${h}:00 ${ap}`;
+}
+function fmtHourRange(hour, lang) {
+  return `${fmtTime(hour,lang)} – ${fmtTime(hour+1,lang)}`;
+}
+function fmtDate(dateStr, lang, days, mons) {
+  const d = new Date(dateStr+'T00:00:00');
+  return `${days[d.getDay()]} ${d.getDate()} ${mons[d.getMonth()]}`;
+}
+function dayNum(dateStr) { return new Date(dateStr+'T00:00:00').getDate(); }
+function dowName(dateStr, lang, days) { return days[new Date(dateStr+'T00:00:00').getDay()]; }
+function monName(dateStr, lang, mons) { return mons[new Date(dateStr+'T00:00:00').getMonth()]; }
+
+// ── API helpers ───────────────────────────────────────────────────────────────
+const api = {
+  getAvailability: () => fetch('/api/availability').then(r=>r.json()),
+  createBooking: d => fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}),
+  getBooking: id => fetch(`/api/bookings/${id}`).then(r=>r.ok?r.json():null),
+  getAll: key => fetch(`/api/bookings?adminKey=${encodeURIComponent(key)}`),
+  approve: (id,key) => fetch(`/api/bookings/${id}/approve`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey:key})}),
+  reject: (id,key) => fetch(`/api/bookings/${id}/reject`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey:key})}),
+  propose: (id,key,slots) => fetch(`/api/bookings/${id}/propose`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey:key,proposedSlots:slots})}),
+  acceptProposed: (id,slot) => fetch(`/api/bookings/${id}/accept-proposed`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(slot)}),
+  cancel: id => fetch(`/api/bookings/${id}/cancel`,{method:'PATCH'}),
+  message: (id,msg,key) => fetch(`/api/bookings/${id}/message`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey:key,message:msg})}),
+};
+
+// ── localStorage helpers ──────────────────────────────────────────────────────
+const LS = {
+  getIds: () => { try{ return JSON.parse(localStorage.getItem('nbs_my')||'[]'); }catch{ return []; } },
+  addId: id => { const ids=LS.getIds(); if(!ids.includes(id)) localStorage.setItem('nbs_my',JSON.stringify([id,...ids])); },
+  getLastStatus: id => localStorage.getItem('nbs_ls_'+id)||null,
+  setLastStatus: (id,s) => localStorage.setItem('nbs_ls_'+id,s),
+};
+
+// ── SVG doodles ───────────────────────────────────────────────────────────────
+function PolishBottle({size=64,c1='var(--pink)',c2='var(--blue)'}) {
+  return <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <rect x="29" y="3" width="6" height="9" rx="2" fill={c2}/>
+    <rect x="25" y="11" width="14" height="9" rx="3" fill={c2}/>
+    <rect x="20" y="21" width="24" height="34" rx="9" fill="#fff" stroke={c1} strokeWidth="2.5"/>
+    <path d="M20 38 a9 9 0 0 0 9 17 h6 a9 9 0 0 0 9-17 z" fill={c1} opacity=".9"/>
+    <ellipse cx="27" cy="29" rx="3" ry="5" fill={c1} opacity=".25"/>
+  </svg>;
+}
+function Sparkle({size=28,color='var(--blue)'}) {
+  return <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <path d="M16 2 C18 11 21 14 30 16 C21 18 18 21 16 30 C14 21 11 18 2 16 C11 14 14 11 16 2 Z" fill={color}/>
+  </svg>;
+}
+function HeartDoodle({size=26,color='var(--pink)'}) {
+  return <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <path d="M16 28 C4 19 4 9 11 9 c3 0 5 2 5 4 c0-2 2-4 5-4 c7 0 7 10-5 19 Z" fill={color}/>
+  </svg>;
+}
+function NailFile({size=64,c1='var(--blue)'}) {
+  return <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <rect x="8" y="26" width="48" height="12" rx="6" transform="rotate(-25 32 32)" fill="#fff" stroke={c1} strokeWidth="2.5"/>
+    <rect x="40" y="24" width="14" height="12" rx="5" transform="rotate(-25 32 32)" fill={c1} opacity=".85"/>
+  </svg>;
+}
+function NailHand({size=72,c1='var(--pink)'}) {
+  return <svg width={size} height={size} viewBox="0 0 72 72" fill="none" aria-hidden="true">
+    <rect x="16" y="30" width="40" height="30" rx="14" fill="#fff" stroke={c1} strokeWidth="2.5"/>
+    {[0,1,2,3].map(i=><g key={i}>
+      <rect x={20+i*9} y="14" width="7" height="22" rx="3.5" fill="#fff" stroke={c1} strokeWidth="2.2"/>
+      <rect x={20+i*9} y="14" width="7" height="7" rx="3.5" fill={c1}/>
+    </g>)}
+  </svg>;
+}
+function ServiceIcon({kind,color='var(--pink)'}) {
+  const p = {width:30,height:30,viewBox:"0 0 32 32",fill:"none","aria-hidden":true};
+  switch(kind) {
+    case'extension': return <svg {...p}><rect x="12" y="3" width="8" height="26" rx="4" fill="#fff" stroke={color} strokeWidth="2.2"/><rect x="12" y="3" width="8" height="9" rx="4" fill={color}/></svg>;
+    case'removal':   return <svg {...p}><circle cx="16" cy="16" r="11" fill="#fff" stroke={color} strokeWidth="2.2"/><path d="M11 16 h10" stroke={color} strokeWidth="2.8" strokeLinecap="round"/></svg>;
+    case'brush':     return <svg {...p}><rect x="14" y="4" width="4" height="14" rx="2" fill={color}/><path d="M11 17 h10 l-2 9 a3 3 0 0 1-6 0 z" fill="#fff" stroke={color} strokeWidth="2.2"/></svg>;
+    case'soak':      return <svg {...p}><path d="M16 4 C22 13 25 17 25 22 a9 9 0 0 1-18 0 c0-5 3-9 9-18 Z" fill="#fff" stroke={color} strokeWidth="2.2"/></svg>;
+    case'sparkle':   return <Sparkle size={26} color={color}/>;
+    case'file':      return <NailFile size={28} c1={color}/>;
+    default:         return <PolishBottle size={30} c1={color} c2={color}/>;
+  }
+}
+
+// ── UI primitives ─────────────────────────────────────────────────────────────
+function Btn({children,onClick,kind='primary',type='button',disabled,full,className='',...rest}) {
+  return <button type={type} disabled={disabled} onClick={onClick}
+    className={`btn btn-${kind}${full?' btn-full':''}${className?' '+className:''}`} {...rest}>
+    {children}
+  </button>;
+}
+function Logo({name='Nails by Sophie',size='md',onClick}) {
+  const words = name.split(/\s+/);
+  return <div className={`logo logo-${size}`} onClick={onClick} role={onClick?'button':undefined}>
+    <span className="logo-bubble">
+      {words.map((w,i)=><span key={i} className={`lw lw-${i%2===0?'pink':'blue'}`}>{w}{' '}</span>)}
+    </span>
+  </div>;
+}
+function StatusPill({status,t}) {
+  const map = {
+    pending:  ['status_pending','pill-amber'],
+    approved: ['status_approved','pill-green'],
+    proposed: ['status_proposed','pill-blue'],
+    declined: ['status_declined','pill-grey'],
+    cancelled:['status_cancelled','pill-grey'],
+  };
+  const [key,cls] = map[status]||map.pending;
+  return <span className={`pill ${cls}`}>{t[key]}</span>;
+}
+
+// ── ServicesGrid ──────────────────────────────────────────────────────────────
+function ServicesGrid({t,lang,selected,onToggle}) {
+  return <div className="svc-grid">
+    {SERVICES.map(s=>{
+      const on = selected.includes(s.key);
+      return <button key={s.key} type="button" className={`svc-card${on?' svc-on':''}`}
+          onClick={()=>onToggle&&onToggle(s.key)}>
+        <span className="svc-ic"><ServiceIcon kind={s.icon} color={on?'#fff':'var(--pink)'}/></span>
+        <span className="svc-name">{lang==='he'?s.he:s.en}</span>
+        <span className="svc-price">{s.price}{CURRENCY}</span>
+        {onToggle&&<span className="svc-check">{on?'✓':'+'}</span>}
+      </button>;
+    })}
+  </div>;
+}
+
+// ── DateTimePicker ────────────────────────────────────────────────────────────
+function DateTimePicker({t,lang,availability,date,time,onPick}) {
+  const days=t.days_short, mons=t.months_short;
+  const dayData = availability.find(d=>d.date===date);
+  const slots = dayData?.slots||[];
+  return <div className="dtp">
+    <div className="dtp-head">{t.next_2weeks}</div>
+    <div className="day-row">
+      {availability.map(day=>{
+        const d=new Date(day.date+'T00:00:00');
+        const hasOpen=day.slots.some(s=>s.available);
+        const isSel=day.date===date;
+        return <button key={day.date} type="button" disabled={!hasOpen}
+          className={`day-chip${isSel?' day-sel':''}${!hasOpen?' day-closed':''}`}
+          onClick={()=>onPick(day.date,null)}>
+          <span className="day-dow">{days[d.getDay()]}</span>
+          <span className="day-num">{d.getDate()}</span>
+          <span className="day-mon">{mons[d.getMonth()]}</span>
+        </button>;
+      })}
+    </div>
+    <div className="time-zone">
+      {!date&&<p className="muted center" style={{padding:'8px 0'}}>{t.pick_day_first}</p>}
+      {date&&<div className="time-grid">
+        {slots.length===0&&<p className="muted">{t.closed}</p>}
+        {slots.map(s=><button key={s.time} type="button" disabled={!s.available}
+          className={`time-chip${time===s.time?' time-sel':''}${!s.available?' time-taken':''}`}
+          onClick={()=>s.available&&onPick(date,s.time)}>
+          {fmtTime(s.time,lang)}
+        </button>)}
+      </div>}
+    </div>
+  </div>;
+}
+
+// ── Thread ────────────────────────────────────────────────────────────────────
+function Thread({t,booking,who,onSend,loading}) {
+  const [text,setText]=useState('');
+  const boxRef=useRef(null);
+  useEffect(()=>{ if(boxRef.current) boxRef.current.scrollTop=boxRef.current.scrollHeight; },[booking?.messages?.length]);
+  const send=()=>{ if(text.trim()&&!loading){ onSend(booking.id,text.trim()); setText(''); } };
+  return <div className="thread">
+    <div className="thread-head">{t.msg_thread}</div>
+    <div className="thread-box" ref={boxRef}>
+      {(!booking.messages||booking.messages.length===0)&&<p className="muted small center" style={{padding:'8px'}}> </p>}
+      {(booking.messages||[]).map((m,i)=>
+        <div key={i} className={`bubble-msg ${m.from===who?'mine':'theirs'}`}>{m.text}</div>
+      )}
+    </div>
+    <div className="thread-input">
+      <input value={text} onChange={e=>setText(e.target.value)} placeholder={t.msg_ph}
+        onKeyDown={e=>e.key==='Enter'&&send()}/>
+      <Btn kind="primary" onClick={send} disabled={loading||!text.trim()}>{t.send}</Btn>
+    </div>
+  </div>;
+}
+
+// ── BookingStatus (client) ────────────────────────────────────────────────────
+function BookingStatus({t,lang,booking,actions,onHome,justBooked,msgLoading}) {
+  if(!booking) return null;
+  const days=t.days_short, mons=t.months_short;
+  const slots=booking.proposedSlots||[];
+  return <div className="status-wrap">
+    {justBooked&&<div className="ty-banner">
+      <NailHand size={64}/>
+      <h2>{t.ty_title}</h2>
+      <p className="muted">{t.ty_sub}</p>
+    </div>}
+    <div className="status-card">
+      <div className="status-top">
+        <h3>{t.yourbooking}</h3>
+        <StatusPill status={booking.status} t={t}/>
+      </div>
+      {booking.status==='approved'&&<div className="confirm-strip">{t.confirmed_banner}</div>}
+      <div className="detail-rows">
+        <div className="drow"><span>{t.f_name}</span><strong>{booking.name}</strong></div>
+        <div className="drow"><span>{t.book_step_services}</span>
+          <strong>{(booking.services||[]).map(k=>svcLabel(k,lang)).join(', ')}</strong></div>
+        <div className="drow"><span>{t.book_step_when}</span>
+          <strong>{fmtDate(booking.date,lang,days,mons)} · {fmtHourRange(booking.time,lang)}</strong></div>
+        <div className="drow drow-total"><span>{t.total}</span>
+          <strong>{booking.total}{CURRENCY}</strong></div>
+      </div>
+      {booking.status==='proposed'&&slots.length>0&&<div className="proposed">
+        <h4>{t.proposed_title}</h4>
+        <p className="muted small">{t.proposed_sub}</p>
+        <div className="prop-grid">
+          {slots.map((s,i)=><button key={i} className="prop-chip"
+              onClick={()=>actions.acceptProposed(booking.id,s)}>
+            <span>{fmtDate(s.date,lang,days,mons)}</span>
+            <strong>{fmtTime(s.time,lang)}</strong>
+          </button>)}
+        </div>
+        <button className="link-btn" onClick={()=>actions.cancelBooking(booking.id)}>{t.decline_all}</button>
+      </div>}
+      {(booking.status==='approved'||(booking.messages&&booking.messages.length>0))&&
+        <Thread t={t} booking={booking} who="client" onSend={actions.sendClientMessage} loading={msgLoading}/>}
+    </div>
+    <div className="status-actions">
+      <Btn kind="ghost" onClick={onHome}>{t.back_home}</Btn>
+      <Btn kind="soft" onClick={()=>{ onHome(); setTimeout(()=>document.getElementById('book')?.scrollIntoView({behavior:'smooth'}),80); }}>
+        {t.book_another}
+      </Btn>
+    </div>
+  </div>;
+}
+
+// ── BookingForm ───────────────────────────────────────────────────────────────
+function BookingForm({t,lang,availability,onSubmit,loading}) {
+  const [name,setName]=useState('');
+  const [phone,setPhone]=useState('');
+  const [email,setEmail]=useState('');
+  const [services,setServices]=useState([]);
+  const [date,setDate]=useState(null);
+  const [time,setTime]=useState(null);
+  const [err,setErr]=useState({});
+
+  const toggle=k=>setServices(p=>p.includes(k)?p.filter(x=>x!==k):[...p,k]);
+  const total=services.reduce((s,k)=>s+(svcByKey(k)?.price||0),0);
+  const days=t.days_short, mons=t.months_short;
+
+  const submit=()=>{
+    const e={};
+    if(!name.trim()) e.name=t.err_name;
+    if(!phone.trim()) e.phone=t.err_phone;
+    if(!/^\S+@\S+\.\S+$/.test(email)) e.email=t.err_email;
+    if(!services.length) e.services=t.err_services;
+    if(!date||time==null) e.slot=t.err_slot;
+    setErr(e);
+    if(Object.keys(e).length) return;
+    onSubmit({name:name.trim(),phone:phone.trim(),email:email.trim(),services,date,time,total});
+  };
+
+  return <div className="book-card" id="book">
+    <div className="book-head">
+      <Sparkle size={22}/><h2>{t.book_title}</h2><Sparkle size={22} color="var(--pink)"/>
+    </div>
+    {/* Step 1 */}
+    <section className="bsec">
+      <h3 className="bstep"><span className="bnum">1</span>{t.book_step_you}</h3>
+      <div className="fields">
+        <label className="field">
+          <span>{t.f_name}</span>
+          <input value={name} onChange={e=>setName(e.target.value)} placeholder={t.f_name_ph} className={err.name?'inp-err':''}/>
+          {err.name&&<em className="ferr">{err.name}</em>}
+        </label>
+        <label className="field">
+          <span>{t.f_phone}</span>
+          <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder={t.f_phone_ph} className={err.phone?'inp-err':''} inputMode="tel"/>
+          {err.phone&&<em className="ferr">{err.phone}</em>}
+        </label>
+        <label className="field">
+          <span>{t.f_email}</span>
+          <input value={email} onChange={e=>setEmail(e.target.value)} placeholder={t.f_email_ph} className={err.email?'inp-err':''} inputMode="email"/>
+          {err.email&&<em className="ferr">{err.email}</em>}
+        </label>
+      </div>
+    </section>
+    {/* Step 2 */}
+    <section className="bsec">
+      <h3 className="bstep"><span className="bnum">2</span>{t.book_step_services}</h3>
+      <p className="muted small">{t.pick_services}</p>
+      <ServicesGrid t={t} lang={lang} selected={services} onToggle={toggle}/>
+      {err.services&&<em className="ferr">{err.services}</em>}
+    </section>
+    {/* Step 3 */}
+    <section className="bsec">
+      <h3 className="bstep"><span className="bnum">3</span>{t.book_step_when}</h3>
+      <DateTimePicker t={t} lang={lang} availability={availability} date={date} time={time}
+        onPick={(d,h)=>{setDate(d);setTime(h);}}/>
+      {err.slot&&<em className="ferr">{err.slot}</em>}
+    </section>
+    {/* Summary */}
+    <div className="book-summary">
+      <div className="bs-line">
+        <span>{t.selected}</span>
+        <strong>{services.length?services.map(k=>svcLabel(k,lang)).join(', '):'—'}</strong>
+      </div>
+      {date&&time!=null&&<div className="bs-line">
+        <span>{t.book_step_when}</span>
+        <strong>{fmtDate(date,lang,days,mons)} · {fmtTime(time,lang)}</strong>
+      </div>}
+      <div className="bs-total"><span>{t.total}</span><span className="bs-amt">{total}{CURRENCY}</span></div>
+      <Btn kind="primary" full onClick={submit} disabled={loading}>
+        {loading?'…':t.confirm_book} {!loading&&<HeartDoodle size={18} color="#fff"/>}
+      </Btn>
+    </div>
+    {err.conflict&&<p style={{color:'var(--err)',textAlign:'center',marginTop:10,fontWeight:700}}>{t.err_conflict}</p>}
+  </div>;
+}
+
+// ── ClientView ────────────────────────────────────────────────────────────────
+function ClientView({lang,t,availability,actions,view,setView,activeBooking,setActiveBooking,justBooked,formLoading,formErr,setFormErr,myBookings,loadMyBookings,msgLoading}) {
+  const days=t.days_short, mons=t.months_short;
+
+  if(view==='status'&&activeBooking) {
+    return <BookingStatus t={t} lang={lang} booking={activeBooking} actions={actions}
+      onHome={()=>setView('home')} justBooked={justBooked} msgLoading={msgLoading}/>;
+  }
+  if(view==='mybookings') {
+    return <div className="mybook">
+      <h2 className="sec-title">{t.my_bookings}</h2>
+      {myBookings.length===0&&<p className="muted center" style={{padding:'20px'}}>{t.adm_none_upcoming}</p>}
+      <div className="mybook-list">
+        {myBookings.map(b=><button key={b.id} className="mybook-row"
+            onClick={()=>{setActiveBooking(b);setView('status');}}>
+          <div className="mb-left">
+            <strong>{fmtDate(b.date,lang,days,mons)} · {fmtTime(b.time,lang)}</strong>
+            <span className="muted small">{(b.services||[]).map(k=>svcLabel(k,lang)).join(', ')}</span>
+          </div>
+          <StatusPill status={b.status} t={t}/>
+        </button>)}
+      </div>
+      <div className="center" style={{marginTop:24}}>
+        <Btn kind="ghost" onClick={()=>setView('home')}>{t.back_home}</Btn>
+      </div>
+    </div>;
+  }
+
+  // home
+  return <div className="home">
+    <section className="hero">
+      <div className="hero-doodles">
+        <span className="float f1"><PolishBottle size={56}/></span>
+        <span className="float f2"><Sparkle size={26} color="var(--pink)"/></span>
+        <span className="float f3"><HeartDoodle size={24}/></span>
+        <span className="float f4"><NailFile size={50}/></span>
+      </div>
+      <span className="kicker">{t.hero_kicker}</span>
+      <h1 className="hero-h">
+        <span className="hh-pink">{t.hero_line1}</span><br/>
+        <span className="hh-blue">{t.hero_line2}</span>
+      </h1>
+      <p className="hero-sub">{t.hero_sub}</p>
+      <Btn kind="primary" onClick={()=>document.getElementById('book')?.scrollIntoView({behavior:'smooth'})}>
+        {t.hero_cta} <Sparkle size={18} color="#fff"/>
+      </Btn>
+    </section>
+
+    <section className="about">
+      <div className="about-art">
+        <NailHand size={120}/>
+        <span className="about-sp s1"><Sparkle size={22} color="var(--blue)"/></span>
+        <span className="about-sp s2"><Sparkle size={16} color="var(--pink)"/></span>
+      </div>
+      <div className="about-text">
+        <h2>{t.about_title}</h2>
+        <p>{t.about_body}</p>
+        <div className="about-tags">
+          <span className="atag">{t.about_tag1}</span>
+          <span className="atag">{t.about_tag2}</span>
+          <span className="atag">{t.about_tag3}</span>
+        </div>
+      </div>
+    </section>
+
+    <section className="services">
+      <h2 className="sec-title">{t.services_title}</h2>
+      <p className="muted center">{t.services_sub}</p>
+      <ServicesGrid t={t} lang={lang} selected={[]} onToggle={null}/>
+    </section>
+
+    <section className="book-section" id="book-section">
+      <BookingForm t={t} lang={lang} availability={availability} loading={formLoading}
+        onSubmit={actions.createBooking}/>
+    </section>
+  </div>;
+}
+
+// ── Admin: MultiSlotPicker ────────────────────────────────────────────────────
+function MultiSlotPicker({t,lang,availability,chosen,setChosen}) {
+  const [day,setDay]=useState(null);
+  const days=t.days_short, mons=t.months_short;
+  const dayData=availability.find(d=>d.date===day);
+  const slots=dayData?.slots||[];
+  const has=(d,h)=>chosen.some(c=>c.date===d&&c.time===h);
+  const toggle=(d,h)=>{
+    if(has(d,h)) setChosen(chosen.filter(c=>!(c.date===d&&c.time===h)));
+    else if(chosen.length<3) setChosen([...chosen,{date:d,time:h}]);
+  };
+  return <div className="dtp">
+    <div className="day-row">
+      {availability.map(av=>{
+        const d=new Date(av.date+'T00:00:00');
+        const hasOpen=av.slots.some(s=>s.available);
+        return <button key={av.date} type="button" disabled={!hasOpen}
+          className={`day-chip${day===av.date?' day-sel':''}${!hasOpen?' day-closed':''}`}
+          onClick={()=>setDay(av.date)}>
+          <span className="day-dow">{days[d.getDay()]}</span>
+          <span className="day-num">{d.getDate()}</span>
+          <span className="day-mon">{mons[d.getMonth()]}</span>
+        </button>;
+      })}
+    </div>
+    {day&&<div className="time-grid" style={{marginTop:12}}>
+      {slots.map(s=><button key={s.time} type="button" disabled={s.taken&&!has(day,s.time)}
+        className={`time-chip${has(day,s.time)?' time-sel':''}${!s.available&&!has(day,s.time)?' time-taken':''}`}
+        onClick={()=>toggle(day,s.time)}>
+        {fmtTime(s.time,lang)}
+      </button>)}
+    </div>}
+    {chosen.length>0&&<div className="chosen-row">
+      {chosen.map((c,i)=><button key={i} className="chosen-chip"
+          onClick={()=>toggle(c.date,c.time)}>
+        {fmtDate(c.date,lang,days,mons)} · {fmtTime(c.time,lang)} ×
+      </button>)}
+    </div>}
+  </div>;
+}
+
+// ── Admin: SuggestModal ───────────────────────────────────────────────────────
+function SuggestModal({t,lang,booking,availability,onClose,onSend}) {
+  const [chosen,setChosen]=useState([]);
+  return <div className="modal-back" onClick={onClose}>
+    <div className="modal" onClick={e=>e.stopPropagation()}>
+      <h3>{t.adm_suggest_title} {booking.name}</h3>
+      <p className="muted small" style={{margin:'8px 0 14px'}}>{t.adm_suggest_sub}</p>
+      <MultiSlotPicker t={t} lang={lang} availability={availability} chosen={chosen} setChosen={setChosen}/>
+      <div className="modal-actions">
+        <Btn kind="ghost" onClick={onClose}>{t.cancel}</Btn>
+        <Btn kind="primary" disabled={chosen.length===0} onClick={()=>onSend(booking.id,chosen)}>
+          {t.send_suggestions}
+        </Btn>
+      </div>
+    </div>
+  </div>;
+}
+
+// ── Admin: RequestCard ────────────────────────────────────────────────────────
+function RequestCard({t,lang,b,onApprove,onSuggest,onDecline}) {
+  const days=t.days_short, mons=t.months_short;
+  return <div className="req-card">
+    <div className="req-head">
+      <div>
+        <strong className="req-name">{b.name}</strong>
+        <span className="muted small block">{b.phone} · {b.email}</span>
+      </div>
+      <StatusPill status={b.status} t={t}/>
+    </div>
+    <div className="req-body">
+      <div className="req-when">
+        <span className="muted small">{t.requested}</span>
+        <strong>{fmtDate(b.date,lang,days,mons)}</strong>
+        <span>{fmtHourRange(b.time,lang)}</span>
+      </div>
+      <div className="req-svc">
+        {(b.services||[]).map(k=>{
+          const s=svcByKey(k);
+          return s?<span key={k} className="svc-tag">
+            <ServiceIcon kind={s.icon} color="var(--pink)"/>
+            {svcLabel(k,lang)}
+          </span>:null;
+        })}
+        <span className="req-total">{b.total}{CURRENCY}</span>
+      </div>
+    </div>
+    <div className="req-actions">
+      <Btn kind="primary" onClick={()=>onApprove(b.id)}>{t.approve}</Btn>
+      <Btn kind="soft" onClick={()=>onSuggest(b)}>{t.suggest}</Btn>
+      <Btn kind="ghost" onClick={()=>onDecline(b.id)}>{t.decline}</Btn>
+    </div>
+  </div>;
+}
+
+// ── Admin: AdminBookingCard ───────────────────────────────────────────────────
+function AdminBookingCard({t,lang,b,onSend,msgLoading}) {
+  const [open,setOpen]=useState(false);
+  const days=t.days_short;
+  const d=new Date(b.date+'T00:00:00');
+  return <div className="abk-card">
+    <div className="abk-head" onClick={()=>setOpen(o=>!o)}>
+      <div className="abk-when">
+        <span className="abk-day">{days[d.getDay()]} {d.getDate()}</span>
+        <span className="abk-time">{fmtTime(b.time,lang)}</span>
+      </div>
+      <div className="abk-mid">
+        <strong>{b.name}</strong>
+        <span className="muted small">{(b.services||[]).map(k=>svcLabel(k,lang)).join(', ')}</span>
+      </div>
+      <div className="abk-right">
+        <StatusPill status={b.status} t={t}/>
+        <span className="abk-total">{b.total}{CURRENCY}</span>
+      </div>
+    </div>
+    {open&&<div className="abk-thread">
+      <span className="muted small">{b.phone} · {b.email}</span>
+      <Thread t={t} booking={b} who="sophie" onSend={(id,text)=>onSend(id,text)} loading={msgLoading}/>
+    </div>}
+  </div>;
+}
+
+// ── Admin: MiniCalendar ───────────────────────────────────────────────────────
+function MiniCalendar({t,lang,bookings}) {
+  const today=new Date(); today.setHours(0,0,0,0);
+  const days=[], first=new Date(today);
+  for(let i=0;i<14;i++){const d=new Date(today);d.setDate(today.getDate()+i);days.push(d);}
+  const startDow=first.getDay();
+  const cells=[];
+  for(let i=0;i<startDow;i++) cells.push(null);
+  days.forEach(d=>cells.push(d));
+  const dows=lang==='he'?['א','ב','ג','ד','ה','ו','ש']:['S','M','T','W','T','F','S'];
+  const pad2=n=>String(n).padStart(2,'0');
+  const toStr=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  const byDay=dateStr=>bookings.filter(b=>b.date===dateStr&&!['cancelled','declined'].includes(b.status));
+  return <div className="cal">
+    <div className="cal-grid cal-dows">
+      {dows.map((d,i)=><span key={i} className="cal-dow">{d}</span>)}
+    </div>
+    <div className="cal-grid">
+      {cells.map((d,i)=>!d?<div key={i} className="cal-cell cal-empty"/>:<div key={i} className="cal-cell">
+        <span className="cal-num">{d.getDate()}</span>
+        <div className="cal-dots">
+          {byDay(toStr(d)).slice(0,4).map(b=>{
+            const cls=b.status==='approved'?'ev-green':b.status==='pending'?'ev-amber':'ev-grey';
+            return <span key={b.id} className={`cal-ev ${cls}`} title={`${b.name} · ${fmtTime(b.time,lang)}`}>
+              {fmtTime(b.time,lang).replace(/\s?[AP]M/,'')} {b.name.split(' ')[0]}
+            </span>;
+          })}
+        </div>
+      </div>)}
+    </div>
+    <div className="cal-legend">
+      <span><i className="dot ev-green"></i>{t.legend_confirmed}</span>
+      <span><i className="dot ev-amber"></i>{t.legend_pending}</span>
+    </div>
+  </div>;
+}
+
+// ── AdminView ─────────────────────────────────────────────────────────────────
+function AdminView({lang,t,availability,adminBookings,actions,adminMsgLoading}) {
+  const [tab,setTab]=useState('pending');
+  const [suggest,setSuggest]=useState(null);
+  const now=Date.now(), weekEnd=now+7*86400000;
+  const pending=adminBookings.filter(b=>b.status==='pending').sort((a,b)=>a.createdAt>b.createdAt?1:-1);
+  const upcoming=adminBookings.filter(b=>b.status==='approved').sort((a,b)=>(a.date+a.time)>(b.date+b.time)?1:-1);
+  const all=[...adminBookings].sort((a,b)=>a.createdAt>b.createdAt?-1:1);
+  const confirmedCount=adminBookings.filter(b=>b.status==='approved').length;
+  const weekCount=adminBookings.filter(b=>b.status==='approved'&&new Date(b.date+'T00:00:00').getTime()<=weekEnd).length;
+  const tabs=[
+    ['pending',`${t.adm_pending}${pending.length?` (${pending.length})`:''}`,],
+    ['upcoming',t.adm_upcoming],['calendar',t.adm_calendar],['all',t.adm_all]
+  ];
+  return <div className="admin">
+    <div className="adm-hero">
+      <div className="adm-hero-text">
+        <h2 className="adm-title">{t.adm_title}</h2>
+        <p className="muted">{t.adm_sub}</p>
+      </div>
+    </div>
+    <div className="stat-row">
+      <div className="stat"><span className="stat-num">{pending.length}</span><span className="stat-lab">{t.stat_requests}</span></div>
+      <div className="stat"><span className="stat-num">{confirmedCount}</span><span className="stat-lab">{t.stat_confirmed}</span></div>
+      <div className="stat"><span className="stat-num">{weekCount}</span><span className="stat-lab">{t.stat_week}</span></div>
+    </div>
+    <div className="adm-tabs">
+      {tabs.map(([k,label])=><button key={k} className={`adm-tab${tab===k?' adm-tab-on':''}`} onClick={()=>setTab(k)}>{label}</button>)}
+    </div>
+    <div className="adm-content">
+      {tab==='pending'&&(pending.length===0
+        ?<p className="muted center" style={{padding:'28px'}}>{t.adm_none_pending}</p>
+        :<div className="req-list">{pending.map(b=><RequestCard key={b.id} t={t} lang={lang} b={b}
+            onApprove={actions.adminApprove} onSuggest={setSuggest} onDecline={actions.adminDecline}/>)}</div>
+      )}
+      {tab==='upcoming'&&(upcoming.length===0
+        ?<p className="muted center" style={{padding:'28px'}}>{t.adm_none_upcoming}</p>
+        :<div className="abk-list">{upcoming.map(b=><AdminBookingCard key={b.id} t={t} lang={lang} b={b}
+            onSend={actions.adminMessage} msgLoading={adminMsgLoading}/>)}</div>
+      )}
+      {tab==='calendar'&&<MiniCalendar t={t} lang={lang} bookings={adminBookings}/>}
+      {tab==='all'&&<div className="abk-list">{all.map(b=><AdminBookingCard key={b.id} t={t} lang={lang} b={b}
+          onSend={actions.adminMessage} msgLoading={adminMsgLoading}/>)}</div>}
+    </div>
+    {suggest&&<SuggestModal t={t} lang={lang} booking={suggest} availability={availability}
+      onClose={()=>setSuggest(null)}
+      onSend={(id,slots)=>{actions.adminPropose(id,slots);setSuggest(null);}}/>}
+  </div>;
+}
+
+// ── Admin login modal ─────────────────────────────────────────────────────────
+function AdminLoginModal({t,onLogin,onClose}) {
+  const [pw,setPw]=useState('');
+  const [err,setErr]=useState(false);
+  const [loading,setLoading]=useState(false);
+  const attempt=async()=>{
+    setLoading(true);setErr(false);
+    const r=await api.getAll(pw);
+    setLoading(false);
+    if(r.ok){ sessionStorage.setItem('nbs_admin_key',pw); onLogin(pw); }
+    else setErr(true);
+  };
+  return <div className="modal-back" onClick={onClose}>
+    <div className="modal" onClick={e=>e.stopPropagation()}>
+      <div className="login-wrap">
+        <Logo name="Nails by Sophie" size="sm"/>
+        <h3>{t.pw_prompt}</h3>
+        <input type="password" value={pw} onChange={e=>setPw(e.target.value)} placeholder="••••••••"
+          onKeyDown={e=>e.key==='Enter'&&attempt()} autoFocus/>
+        {err&&<span className="login-err">{t.pw_err}</span>}
+        <Btn kind="primary" full onClick={attempt} disabled={loading||!pw}>
+          {loading?'…':t.pw_btn}
+        </Btn>
+        <button className="link-btn small" onClick={onClose}>{t.cancel}</button>
+      </div>
+    </div>
+  </div>;
+}
+
+// ── Root App ──────────────────────────────────────────────────────────────────
+function App() {
+  const [lang,setLang]=useState('en');
+  const t=window.NBS_T(lang);
+
+  const [surface,setSurface]=useState('client');
+  const [view,setView]=useState('home');
+  const [showLogin,setShowLogin]=useState(false);
+  const [adminKey,setAdminKey]=useState(()=>sessionStorage.getItem('nbs_admin_key')||'');
+  const [adminLoggedIn,setAdminLoggedIn]=useState(()=>!!sessionStorage.getItem('nbs_admin_key'));
+
+  const [availability,setAvailability]=useState([]);
+  const [adminBookings,setAdminBookings]=useState([]);
+  const [myBookings,setMyBookings]=useState([]);
+  const [activeBooking,setActiveBooking]=useState(null);
+  const [justBooked,setJustBooked]=useState(false);
+
+  const [formLoading,setFormLoading]=useState(false);
+  const [msgLoading,setMsgLoading]=useState(false);
+  const [adminMsgLoading,setAdminMsgLoading]=useState(false);
+  const [notifications,setNotifications]=useState([]);
+  const [notifOpen,setNotifOpen]=useState(false);
+
+  // apply dir
+  useEffect(()=>{
+    document.documentElement.lang=lang;
+    document.documentElement.dir=t.dir||'ltr';
+  },[lang]);
+
+  // load availability
+  const loadAvailability=useCallback(()=>{
+    api.getAvailability().then(setAvailability).catch(()=>{});
+  },[]);
+  useEffect(loadAvailability,[]);
+
+  // load admin bookings
+  const loadAdminBookings=useCallback(()=>{
+    if(!adminKey) return;
+    api.getAll(adminKey).then(r=>r.ok?r.json():null).then(data=>{
+      if(data) setAdminBookings(data);
+    }).catch(()=>{});
+  },[adminKey]);
+  useEffect(()=>{ if(adminLoggedIn) loadAdminBookings(); },[adminLoggedIn]);
+
+  // load my bookings
+  const loadMyBookings=useCallback(()=>{
+    const ids=LS.getIds();
+    if(!ids.length){ setMyBookings([]); return; }
+    Promise.all(ids.map(id=>api.getBooking(id))).then(bs=>{
+      const valid=bs.filter(Boolean);
+      setMyBookings(valid);
+      // check for status changes → notifications
+      valid.forEach(b=>{
+        const last=LS.getLastStatus(b.id);
+        if(last&&last!==b.status){
+          if(b.status==='approved') addNotif(t.n_approved);
+          else if(b.status==='proposed') addNotif(t.n_proposed);
+          else if(b.status==='declined'&&b.messages?.length) addNotif(t.n_message);
+        }
+        LS.setLastStatus(b.id,b.status);
+      });
+    });
+  },[]);
+  useEffect(loadMyBookings,[]);
+
+  // poll active booking (status page)
+  useEffect(()=>{
+    if(!activeBooking?.id||view!=='status') return;
+    const poll=()=>{
+      api.getBooking(activeBooking.id).then(b=>{
+        if(!b) return;
+        if(b.status!==activeBooking.status||b.messages?.length!==activeBooking.messages?.length){
+          setActiveBooking(b);
+          if(b.status==='approved'&&activeBooking.status!=='approved') addNotif(t.n_approved);
+          else if(b.status==='proposed'&&activeBooking.status!=='proposed') addNotif(t.n_proposed);
+        }
+      });
+    };
+    const iv=setInterval(poll,15000);
+    return ()=>clearInterval(iv);
+  },[activeBooking?.id,view]);
+
+  function addNotif(text) {
+    setNotifications(p=>[{id:Date.now(),text,read:false},...p]);
+  }
+
+  const unread=notifications.filter(n=>!n.read).length+(surface==='admin'?0:0);
+  const openNotifs=()=>{
+    setNotifOpen(o=>!o);
+    setNotifications(p=>p.map(n=>({...n,read:true})));
+  };
+
+  // ── client actions ──
+  const actions = {
+    createBooking: async (data) => {
+      setFormLoading(true);
+      try {
+        const r=await api.createBooking(data);
+        const body=await r.json();
+        if(!r.ok){
+          if(r.status===409){ /* slot taken - handled in form */ }
+          return;
+        }
+        const booking=await api.getBooking(body.id);
+        if(booking){
+          LS.addId(body.id);
+          LS.setLastStatus(body.id,'pending');
+          setActiveBooking(booking);
+          setJustBooked(true);
+          setView('status');
+          loadAvailability();
+          loadMyBookings();
+          window.scrollTo({top:0,behavior:'smooth'});
+        }
+      } catch(e){} finally{ setFormLoading(false); }
+    },
+    acceptProposed: async (id,slot) => {
+      const r=await api.acceptProposed(id,slot);
+      if(r.ok){ const b=await r.json(); setActiveBooking(b); loadAvailability(); }
+    },
+    cancelBooking: async (id) => {
+      const r=await api.cancel(id);
+      if(r.ok){ const b=await r.json(); setActiveBooking(b); loadAvailability(); }
+    },
+    sendClientMessage: async (id,text) => {
+      setMsgLoading(true);
+      await api.message(id,text,null);
+      const b=await api.getBooking(id);
+      if(b) setActiveBooking(b);
+      setMsgLoading(false);
+    },
+    // admin
+    adminApprove: async (id) => {
+      await api.approve(id,adminKey); loadAdminBookings();
+    },
+    adminDecline: async (id) => {
+      await api.reject(id,adminKey); loadAdminBookings();
+    },
+    adminPropose: async (id,slots) => {
+      await api.propose(id,adminKey,slots); loadAdminBookings();
+    },
+    adminMessage: async (id,text) => {
+      setAdminMsgLoading(true);
+      await api.message(id,text,adminKey);
+      setAdminMsgLoading(false);
+      loadAdminBookings();
+    },
+  };
+
+  const goClient=()=>{ setSurface('client'); setView('home'); setNotifOpen(false); };
+  const toggleSurface=()=>{
+    if(surface==='admin'){ goClient(); return; }
+    if(adminLoggedIn){ setSurface('admin'); loadAdminBookings(); }
+    else setShowLogin(true);
+  };
+  const handleLogin=(key)=>{
+    setAdminKey(key); setAdminLoggedIn(true); setShowLogin(false);
+    setSurface('admin');
+    api.getAll(key).then(r=>r.ok?r.json():null).then(d=>{ if(d) setAdminBookings(d); });
+  };
+
+  // pending count badge for admin surface
+  const pendingCount=adminLoggedIn?adminBookings.filter(b=>b.status==='pending').length:0;
+  const bellBadge=surface==='admin'?pendingCount:unread;
+
+  return <div className={`app${surface==='admin'?' is-admin':''}`}>
+    <header className="topbar">
+      <Logo name="Nails by Sophie" size="sm" onClick={goClient}/>
+      <nav className="top-nav">
+        {surface==='client'&&
+          <button className="navlink" onClick={()=>{setJustBooked(false);setView('mybookings');}}>
+            {t.my_bookings}
+          </button>}
+        {/* notification bell */}
+        <div className="notif-wrap">
+          <button className="bell" onClick={openNotifs} aria-label={t.notif}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3a6 6 0 0 0-6 6v3l-1.6 3.2A1 1 0 0 0 5.3 19h13.4a1 1 0 0 0 .9-1.4L18 12V9a6 6 0 0 0-6-6Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+              <path d="M9.5 21a2.5 2.5 0 0 0 5 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+            {bellBadge>0&&<span className="bell-badge">{bellBadge}</span>}
+          </button>
+          {notifOpen&&<div className="notif-pop">
+            <div className="notif-head">{t.notif}</div>
+            {notifications.length===0&&pendingCount===0
+              ?<p className="notif-empty">{t.no_notif}</p>
+              :<>
+                {surface==='admin'&&pendingCount>0&&
+                  <div className="notif-item"><Sparkle size={14} color="var(--pink)"/><span>{pendingCount} pending request{pendingCount!==1?'s':''}</span></div>}
+                {notifications.slice(0,8).map(n=>
+                  <div key={n.id} className="notif-item"><Sparkle size={14} color="var(--pink)"/><span>{n.text}</span></div>)}
+              </>}
+          </div>}
+        </div>
+        {/* lang toggle */}
+        <div className="lang-toggle">
+          <button className={lang==='en'?'on':''} onClick={()=>setLang('en')}>EN</button>
+          <button className={lang==='he'?'on':''} onClick={()=>setLang('he')}>עב</button>
+        </div>
+        {/* surface toggle */}
+        <button className="surface-btn" onClick={toggleSurface}>
+          {surface==='admin'?t.adm_back:t.nav_admin}
+        </button>
+      </nav>
+    </header>
+
+    <main className="canvas">
+      {surface==='client'
+        ?<ClientView lang={lang} t={t} availability={availability} actions={actions}
+            view={view} setView={v=>{ setJustBooked(false); setView(v); }}
+            activeBooking={activeBooking} setActiveBooking={setActiveBooking}
+            justBooked={justBooked} formLoading={formLoading}
+            myBookings={myBookings} loadMyBookings={loadMyBookings} msgLoading={msgLoading}/>
+        :<AdminView lang={lang} t={t} availability={availability}
+            adminBookings={adminBookings} actions={actions} adminMsgLoading={adminMsgLoading}/>}
+    </main>
+
+    <footer className="foot">
+      <Logo name="Nails by Sophie" size="xs"/>
+      <span className="muted small">{t.tagline}</span>
+    </footer>
+
+    {showLogin&&<AdminLoginModal t={t} onLogin={handleLogin} onClose={()=>setShowLogin(false)}/>}
+  </div>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
