@@ -12,6 +12,7 @@
   --pearl:#FCF6FA; --cream:#FFFDFC;
   --ink:#4a3946; --ink-soft:#9b8b96;
   --line:rgba(74,57,70,.10); --card:#fff;
+  --card-bg:#ffffff; --input-bg:#ffffff;
   --r:24px; --r-sm:16px; --r-lg:34px;
   --pink-deep:#e8478d;
   --shadow:0 14px 38px -14px rgba(232,71,141,.30);
@@ -20,6 +21,50 @@
   --amber:#f5a623; --green:#34c98a; --err:#e2505b;
   --maxw:980px;
 }
+
+/* ── dark pink theme ── */
+[data-theme="dark-pink"]{
+  --pink:#ff6eb0; --blue:#5fcfe8;
+  --pearl:#130810; --cream:#180c14;
+  --ink:#f0e0ec; --ink-soft:#b88aaa;
+  --line:rgba(255,110,176,.18);
+  --card-bg:#261220; --input-bg:#1e0e18;
+  --pink-soft:rgba(255,110,176,.18); --blue-soft:rgba(95,207,232,.12);
+  --pink-deep:#ff6eb0;
+  --shadow:0 14px 38px -14px rgba(0,0,0,.70);
+  --shadow-sm:0 6px 18px -8px rgba(0,0,0,.55);
+}
+[data-theme="dark-pink"] body{background:var(--pearl)}
+[data-theme="dark-pink"] .topbar{background:color-mix(in srgb,#130810 82%,transparent)}
+[data-theme="dark-pink"] .foot{background:color-mix(in srgb,#130810 60%,#180c14)}
+
+/* ── dark blue theme ── */
+[data-theme="dark-blue"]{
+  --pink:#FF5DA2; --blue:#5fcfe8;
+  --pearl:#080f1a; --cream:#0c1424;
+  --ink:#d6e8ff; --ink-soft:#7a9fc0;
+  --line:rgba(95,207,232,.18);
+  --card-bg:#0f1e30; --input-bg:#0a1520;
+  --pink-soft:rgba(255,93,162,.18); --blue-soft:rgba(95,207,232,.12);
+  --pink-deep:#FF5DA2;
+  --shadow:0 14px 38px -14px rgba(0,0,0,.70);
+  --shadow-sm:0 6px 18px -8px rgba(0,0,0,.55);
+}
+[data-theme="dark-blue"] body{background:var(--pearl)}
+[data-theme="dark-blue"] .topbar{background:color-mix(in srgb,#080f1a 82%,transparent)}
+[data-theme="dark-blue"] .foot{background:color-mix(in srgb,#080f1a 60%,#0c1424)}
+
+/* card-bg overrides (all themes) */
+.about,.status-card,.modal,.lang-toggle,.bell,.stat,.abk-card,.req-card,.cal,
+.mybook-row,.notif-pop,.adm-tabs{background:var(--card-bg)}
+.svc-card,.day-chip,.time-chip{background:var(--card-bg)}
+.field input,.thread-input input{background:var(--input-bg);color:var(--ink)}
+/* book-summary gradient adapts in dark themes */
+[data-theme="dark-pink"] .book-summary,
+[data-theme="dark-blue"] .book-summary{background:linear-gradient(180deg,var(--pink-soft),var(--card-bg))}
+
+/* Sophie photo in about circle */
+.sophie-photo{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100vh}
 body{
@@ -55,7 +100,9 @@ button{font-family:inherit;cursor:pointer}input{font-family:inherit}textarea{fon
 .top-nav{display:flex;align-items:center;gap:10px}
 .navlink{border:none;background:transparent;color:var(--ink);font-weight:700;font-size:.92rem;padding:8px 12px;border-radius:999px}
 .navlink:hover{background:var(--pink-soft);color:var(--pink-deep)}
-.lang-toggle{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:var(--shadow-sm)}
+.theme-btn{border:1px solid var(--line);background:var(--card-bg);border-radius:999px;width:40px;height:40px;font-size:1.1rem;cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:transform .15s}
+.theme-btn:hover{transform:scale(1.12)}
+.lang-toggle{display:flex;background:var(--card-bg);border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:var(--shadow-sm)}
 .lang-toggle button{border:none;background:transparent;padding:5px 11px;border-radius:999px;font-weight:800;color:var(--ink-soft);font-size:.82rem}
 .lang-toggle button.on{background:var(--blue);color:#fff}
 .surface-btn{border:none;background:var(--ink);color:#fff;font-weight:700;font-size:.85rem;padding:9px 15px;border-radius:999px;box-shadow:var(--shadow-sm)}
@@ -332,8 +379,8 @@ button{font-family:inherit;cursor:pointer}input{font-family:inherit}textarea{fon
     en:{
       dir:"ltr",tagline:"Nail artistry, made just for you",
       nav_book:"Book now",nav_about:"About",nav_admin:"Sophie's dashboard",
-      hero_kicker:"Boutique nail studio",hero_line1:"Pretty nails,",hero_line2:"happy you.",
-      hero_sub:"Gel manicures, extensions & loving care — by appointment, in a cozy little studio.",
+      hero_kicker:"Boutique nail studio",hero_line1:"Pretty Nails,",hero_line2:"Happy You!",
+      hero_sub:"Gel Manicures, Extensions & Loving Care — By Appointment, in a Cozy Little Studio.",
       hero_cta:"Book your spot",
       about_title:"Hi, I'm Sophie ✨",
       about_body:"I'm a nail artist who treats every set like a tiny piece of art. Whether you want a clean natural look or full glam extensions, I take my time, use quality gel, and make sure you leave smiling. Your nails are in good hands.",
@@ -436,13 +483,13 @@ const { useState, useEffect, useMemo, useRef, useCallback } = React;
 // ── constants ──────────────────────────────────────────────────────────────────
 const CURRENCY = '₪';
 const SERVICES = [
-  { key:'gelmani',   en:'Gel Manicure',  he:'מניקור ג׳ל',    price:60, icon:'polish'   },
-  { key:'gelext',    en:'Gel Extension', he:'הארכת ג׳ל',     price:80, icon:'extension'},
-  { key:'gelremoval',en:'Gel Removal',   he:'הסרת ג׳ל',      price:80, icon:'removal'  },
-  { key:'polish',    en:'Normal Polish', he:'לק רגיל',        price:40, icon:'brush'    },
-  { key:'soakoff',   en:'Soak Off',      he:'סוק אוף',        price:30, icon:'soak'     },
-  { key:'cleaning',  en:'Cleaning',      he:'ניקוי',           price:30, icon:'sparkle'  },
-  { key:'prep',      en:'Prep',          he:'הכנה',            price:15, icon:'file'     },
+  { key:'gelmani',   en:'Gel Manicure',  he:'מניקור ג׳ל',    price:30, icon:'polish'   },
+  { key:'gelext',    en:'Gel Extension', he:'הארכת ג׳ל',     price:45, icon:'extension'},
+  { key:'gelremoval',en:'Gel Removal',   he:'הסרת ג׳ל',      price:40, icon:'removal'  },
+  { key:'polish',    en:'Normal Polish', he:'לק רגיל',        price:25, icon:'brush'    },
+  { key:'soakoff',   en:'Soak Off',      he:'סוק אוף',        price:20, icon:'soak'     },
+  { key:'cleaning',  en:'Cleaning',      he:'ניקוי',           price:15, icon:'sparkle'  },
+  { key:'prep',      en:'Prep',          he:'הכנה',            price:10, icon:'file'     },
 ];
 const svcByKey = k => SERVICES.find(s => s.key === k);
 const svcLabel = (k, lang) => { const s = svcByKey(k); return s ? (lang==='he'?s.he:s.en) : k; };
@@ -819,7 +866,7 @@ function ClientView({lang,t,availability,actions,view,setView,activeBooking,setA
 
     <section className="about">
       <div className="about-art">
-        <NailHand size={120}/>
+        <img src="/sophie.jpg" alt="Sophie" className="sophie-photo"/>
         <span className="about-sp s1"><Sparkle size={22} color="var(--blue)"/></span>
         <span className="about-sp s2"><Sparkle size={16} color="var(--pink)"/></span>
       </div>
@@ -1101,6 +1148,19 @@ function App() {
   const [myBookings,setMyBookings]=useState([]);
   const [activeBooking,setActiveBooking]=useState(null);
   const [justBooked,setJustBooked]=useState(false);
+  const THEMES=['light','dark-pink','dark-blue'];
+  const THEME_LABELS={light:'☀️','dark-pink':'🌸','dark-blue':'🌙'};
+  const [themeIdx,setThemeIdx]=useState(()=>{
+    const saved=localStorage.getItem('nbs_theme');
+    const idx=THEMES.indexOf(saved);
+    return idx>=0?idx:0;
+  });
+  const theme=THEMES[themeIdx];
+  useEffect(()=>{
+    document.documentElement.setAttribute('data-theme',theme==='light'?'':theme);
+    localStorage.setItem('nbs_theme',theme);
+  },[theme]);
+  const cycleTheme=()=>setThemeIdx(i=>(i+1)%THEMES.length);
 
   const [formLoading,setFormLoading]=useState(false);
   const [msgLoading,setMsgLoading]=useState(false);
@@ -1279,6 +1339,10 @@ function App() {
               </>}
           </div>}
         </div>
+        {/* theme toggle */}
+        <button className="theme-btn" onClick={cycleTheme} title="Toggle theme" aria-label="Toggle theme">
+          {THEME_LABELS[theme]}
+        </button>
         {/* lang toggle */}
         <div className="lang-toggle">
           <button className={lang==='en'?'on':''} onClick={()=>setLang('en')}>EN</button>
