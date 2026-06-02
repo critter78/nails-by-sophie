@@ -22,49 +22,62 @@
   --maxw:980px;
 }
 
-/* ── dark pink theme ── */
+/* ── dark pink theme — black bg, HOT PINK bubble cards ── */
 [data-theme="dark-pink"]{
   --pink:#ff6eb0; --blue:#5fcfe8;
-  --pearl:#130810; --cream:#180c14;
-  --ink:#f0e0ec; --ink-soft:#b88aaa;
-  --line:rgba(255,110,176,.18);
-  --card-bg:#261220; --input-bg:#1e0e18;
-  --pink-soft:rgba(255,110,176,.18); --blue-soft:rgba(95,207,232,.12);
-  --pink-deep:#ff6eb0;
-  --shadow:0 14px 38px -14px rgba(0,0,0,.70);
-  --shadow-sm:0 6px 18px -8px rgba(0,0,0,.55);
+  --pearl:#0e050b; --cream:#160910;
+  --ink:#ffffff; --ink-soft:rgba(255,255,255,.6);
+  --line:rgba(255,110,176,.28);
+  --card-bg:#d81b7a; --input-bg:#b01460;
+  --pink-soft:rgba(255,110,176,.25); --blue-soft:rgba(95,207,232,.18);
+  --pink-deep:#ffe0f0;
+  --shadow:0 14px 38px -14px rgba(0,0,0,.75);
+  --shadow-sm:0 6px 18px -8px rgba(0,0,0,.60);
 }
 [data-theme="dark-pink"] body{background:var(--pearl)}
-[data-theme="dark-pink"] .topbar{background:color-mix(in srgb,#130810 82%,transparent)}
-[data-theme="dark-pink"] .foot{background:color-mix(in srgb,#130810 60%,#180c14)}
+[data-theme="dark-pink"] .topbar{background:color-mix(in srgb,#0e050b 85%,transparent)}
+[data-theme="dark-pink"] .foot{background:color-mix(in srgb,#0e050b 65%,#160910)}
+[data-theme="dark-pink"] .book-summary{background:linear-gradient(180deg,var(--pink-soft),var(--card-bg))}
+[data-theme="dark-pink"] .kicker{background:rgba(255,255,255,.12);color:#ffe0f0}
+[data-theme="dark-pink"] .btn-ghost{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.25);color:#fff}
 
-/* ── dark blue theme ── */
-[data-theme="dark-blue"]{
-  --pink:#FF5DA2; --blue:#5fcfe8;
-  --pearl:#080f1a; --cream:#0c1424;
-  --ink:#d6e8ff; --ink-soft:#7a9fc0;
-  --line:rgba(95,207,232,.18);
-  --card-bg:#0f1e30; --input-bg:#0a1520;
-  --pink-soft:rgba(255,93,162,.18); --blue-soft:rgba(95,207,232,.12);
-  --pink-deep:#FF5DA2;
-  --shadow:0 14px 38px -14px rgba(0,0,0,.70);
-  --shadow-sm:0 6px 18px -8px rgba(0,0,0,.55);
+/* ── baby blue theme — sky bg, white bubble cards ── */
+[data-theme="baby-blue"]{
+  --pink:#FF5DA2; --blue:#29b6f6;
+  --pearl:#ddf1fb; --cream:#cce9f8;
+  --ink:#0d2d42; --ink-soft:#4a7a9b;
+  --line:rgba(13,45,66,.12);
+  --card-bg:#ffffff; --input-bg:#ffffff;
+  --pink-soft:rgba(255,93,162,.12); --blue-soft:rgba(41,182,246,.18);
+  --pink-deep:#d81b60;
+  --shadow:0 14px 38px -14px rgba(41,182,246,.30);
+  --shadow-sm:0 6px 18px -8px rgba(41,182,246,.22);
 }
-[data-theme="dark-blue"] body{background:var(--pearl)}
-[data-theme="dark-blue"] .topbar{background:color-mix(in srgb,#080f1a 82%,transparent)}
-[data-theme="dark-blue"] .foot{background:color-mix(in srgb,#080f1a 60%,#0c1424)}
+[data-theme="baby-blue"] body{background:var(--pearl)}
+[data-theme="baby-blue"] body::before{
+  background:
+    radial-gradient(46vw 46vw at 88% -6%,color-mix(in srgb,var(--blue) 28%,transparent),transparent 70%),
+    radial-gradient(40vw 40vw at -6% 12%,color-mix(in srgb,var(--pink) 16%,transparent),transparent 70%),
+    radial-gradient(50vw 50vw at 50% 116%,color-mix(in srgb,var(--blue) 18%,transparent),transparent 70%);
+}
+[data-theme="baby-blue"] .topbar{background:color-mix(in srgb,#ddf1fb 80%,transparent)}
+[data-theme="baby-blue"] .foot{background:color-mix(in srgb,#ddf1fb 65%,#cce9f8)}
+[data-theme="baby-blue"] .book-summary{background:linear-gradient(180deg,var(--blue-soft),var(--card-bg))}
 
 /* card-bg overrides (all themes) */
 .about,.status-card,.modal,.lang-toggle,.bell,.stat,.abk-card,.req-card,.cal,
 .mybook-row,.notif-pop,.adm-tabs{background:var(--card-bg)}
 .svc-card,.day-chip,.time-chip{background:var(--card-bg)}
 .field input,.thread-input input{background:var(--input-bg);color:var(--ink)}
-/* book-summary gradient adapts in dark themes */
-[data-theme="dark-pink"] .book-summary,
-[data-theme="dark-blue"] .book-summary{background:linear-gradient(180deg,var(--pink-soft),var(--card-bg))}
 
-/* Sophie photo in about circle */
-.sophie-photo{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+/* Sophie photo — switches with theme, pre-cropped circular PNGs */
+.about-art{
+  background:url('/SophieBot-A1-Soft-Pearl.png') center/contain no-repeat;
+  background-color:transparent !important;
+}
+[data-theme="dark-pink"] .about-art{background-image:url('/SophieBot-A2-Pink-Duotone.png')}
+[data-theme="baby-blue"] .about-art{background-image:url('/SophieBot-A3-Sky-Duotone.png')}
+.sophie-photo{display:none}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100vh}
 body{
@@ -1148,8 +1161,8 @@ function App() {
   const [myBookings,setMyBookings]=useState([]);
   const [activeBooking,setActiveBooking]=useState(null);
   const [justBooked,setJustBooked]=useState(false);
-  const THEMES=['light','dark-pink','dark-blue'];
-  const THEME_LABELS={light:'☀️','dark-pink':'🌸','dark-blue':'🌙'};
+  const THEMES=['light','dark-pink','baby-blue'];
+  const THEME_LABELS={light:'☀️','dark-pink':'🌸','baby-blue':'💙'};
   const [themeIdx,setThemeIdx]=useState(()=>{
     const saved=localStorage.getItem('nbs_theme');
     const idx=THEMES.indexOf(saved);
