@@ -71,10 +71,6 @@
 .field input,.thread-input input{background:var(--input-bg);color:var(--ink)}
 
 /* Sophie photo — switches with theme, pre-cropped circular PNGs */
-.about-art{
-  background:url('/SophieBot-A1-Soft-Pearl.png') center/contain no-repeat;
-  background-color:transparent !important;
-}
 [data-theme="dark-pink"] .about-art{background-image:url('/SophieBot-A2-Pink-Duotone.png')}
 [data-theme="baby-blue"] .about-art{background-image:url('/SophieBot-A3-Sky-Duotone.png')}
 .sophie-photo{display:none}
@@ -174,7 +170,7 @@ button{font-family:inherit;cursor:pointer}input{font-family:inherit}textarea{fon
 
 /* ── about ── */
 .about{display:flex;gap:30px;align-items:center;background:#fff;border-radius:var(--r-lg);padding:30px clamp(20px,4vw,40px);box-shadow:var(--shadow);border:1px solid var(--line)}
-.about-art{position:relative;flex:0 0 auto;display:grid;place-items:center;width:160px;height:160px;background:var(--blue-soft);border-radius:50%}
+.about-art{position:relative;flex:0 0 auto;display:grid;place-items:center;width:160px;height:160px;background-color:transparent;background-image:url('/SophieBot-A1-Soft-Pearl.png');background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:50%}
 .about-sp{position:absolute}
 .about-sp.s1{top:6px;inset-inline-end:8px}.about-sp.s2{bottom:14px;inset-inline-start:6px}
 .about-text h2{font-size:1.8rem;margin-bottom:10px}
